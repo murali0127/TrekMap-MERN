@@ -2,7 +2,7 @@
 
 A full-stack MERN application that allows users to explore, get details, and manage trekking destinations with image support and CRUD functionality.
 
-MongoDB : Express.js, React (if you are using it), Node.js, Mongoose, REST API
+MongoDB : Express.js, React , Node.js, Mongoose, REST API
 
 🚀 Features
 
