@@ -1,0 +1,34 @@
+<% layout('layouts/boilerplate') %>
+      <div class="row">
+            <div class="col-6 offset-3">
+                  <!--style="width: 25rem;"-->
+                  <div class="card md-3 mt-5">
+
+                        <img src="<%= data.image %>" style="width:100%;height:25rem" class="card-img-top"
+                              alt="<%= data.name %>">
+                        <div class="card-body">
+                              <h1 class="card-title ">Details About <%= data.name%>. </h1>
+                              <p class="card-text text-muted">
+                                    <%= data.description %>
+                              </p>
+                              <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Location : <%= data.location %>
+                                    </li>
+                                    <li class="list-group-item">District : <%= data.district %>
+                                    </li>
+                              </ul>
+                              <div class="card-body">
+                                    <a href="/treks/<%= data._id %>/edit" class="btn btn-primary card-link">Edit</a>
+                                    <form action="/treks/<%= data._id %>?_method=DELETE" method="post" class="mt-2">
+                                          <button type="submit" class="btn btn-danger card-link">Delete</button>
+                                    </form>
+                              </div>
+
+                        </div>
+                        <div class="card-footer text-muted">
+                              2 days ago
+                        </div>
+
+                  </div>
+            </div>
+      </div>

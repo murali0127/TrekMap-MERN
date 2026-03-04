@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate')%>
+      <div class="row">
+            <h1 class="text-center">Edit <%= trekking.name %>
+            </h1>
+            <div class="container-fluid">
+                  <div class="col-6 offset-3">
+                        <form action="/treks/<%= trekking._id %>?_method=PUt" method="post">
+                              <div class="contianer-fluid mt-3">
+                                    <label for="name" class="form-label">Name : </label>
+                                    <input type="text" id="name" class="form-control" name="trekkings[name]"
+                                          value="<%= trekking.name %>">
+                              </div>
+                              <div class="contianer-fluid mt-3">
+                                    <label for="location" class="form-label">Location : </label>
+                                    <input type="text" id="name" class="form-control" name="trekkings[location]"
+                                          value="<%= trekking.location %>">
+                              </div>
+                              <div class="contianer-fluid mt-3">
+                                    <label for="district" class="form-label">District : </label>
+                                    <input type="text" id="district" class="form-control" name="trekkings[district]"
+                                          value="<%= trekking.district%>">
+                              </div>
+                              <div class="contianer-fluid mt-3">
+                                    <label for="image" class="form-label">Image URl : </label>
+                                    <input type="text" id="iamge" class="form-control" name="trekkings[image]"
+                                          value="<%= trekking.image%>">
+                              </div>
+                              <div class="contianer-fluid mt-3">
+                                    <label for="description" class="form-label">Description : </label>
+                                    <textarea type="text" id="description" class="form-control"
+                                          name="trekkings[description]"> <%= trekking.description %></textarea>
+
+                              </div>
+                              <div>
+                                    <button type="submit" class="btn btn-primary mt-5">Edit</button>
+                              </div>
+                        </form>
+                        <div>
+                              <a href="/treks/<%= trekking._id %>" class="btn btn-primary mt-5">Cancel</a>
+                        </div>
+                  </div>
+            </div>
+      </div>
