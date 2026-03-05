@@ -4,26 +4,27 @@
             </h1>
             <div class="container-fluid">
                   <div class="col-6 offset-3">
-                        <form action="/treks/<%= trekking._id %>?_method=PUt" method="post">
+                        <form action="/treks/<%= trekking._id %>?_method=PUt" method="post" novalidate
+                              class="validated-form">
                               <div class="contianer-fluid mt-3">
                                     <label for="name" class="form-label">Name : </label>
                                     <input type="text" id="name" class="form-control" name="trekkings[name]"
-                                          value="<%= trekking.name %>">
+                                          value="<%= trekking.name %>" required>
                               </div>
                               <div class="contianer-fluid mt-3">
                                     <label for="location" class="form-label">Location : </label>
                                     <input type="text" id="name" class="form-control" name="trekkings[location]"
-                                          value="<%= trekking.location %>">
+                                          value="<%= trekking.location %>" required>
                               </div>
                               <div class="contianer-fluid mt-3">
                                     <label for="district" class="form-label">District : </label>
                                     <input type="text" id="district" class="form-control" name="trekkings[district]"
-                                          value="<%= trekking.district%>">
+                                          value="<%= trekking.district%>" required>
                               </div>
                               <div class="contianer-fluid mt-3">
                                     <label for="image" class="form-label">Image URl : </label>
                                     <input type="text" id="iamge" class="form-control" name="trekkings[image]"
-                                          value="<%= trekking.image%>">
+                                          value="<%= trekking.image%>" required>
                               </div>
                               <div class="contianer-fluid mt-3">
                                     <label for="description" class="form-label">Description : </label>

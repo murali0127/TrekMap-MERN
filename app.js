@@ -1,6 +1,5 @@
 const express = require('express');
 const ejs = require('ejs');
-// const methodOverride = require('method-override');
 const path = require('path');
 const Trekking = require('./models/trekking')
 const mongoose = require('mongoose');
@@ -8,7 +7,9 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 //ERROR CLASS
 const catchAsync = require('./utils/catchAsync');
-const ExpressError = require('./utils/ExpreesError')
+const ExpressError = require('./utils/ExpressError');
+//VALIDATE SCHEMA MODULE
+const validateTrekking = require('./validateSchema');
 
 
 
@@ -22,11 +23,7 @@ mongoose.connect('mongodb://localhost:27017/Trek-Map')
             console.log(err.message);
       })
 
-// const db = mongoose.connection
-// db.on('error', console.error.bind(console, 'Connection Error.'));
-// db.once('open', () => {
-//       console.log('Database connected to Mongo.')
-// })
+
 
 //Template Engine & views
 app.engine('ejs', ejsMate)
@@ -52,32 +49,29 @@ app.get('/treks', catchAsync(async (req, res) => {
       res.render('trekkings/index', { trekkings });
 }));
 
+app.post('/treks/', validateTrekking, catchAsync(async (req, res, next) => {
+      console.log(req.body);
+      const newTrek = await Trekking(req.body.trekkings);
+      await newTrek.save();
+      res.redirect(`/treks/${newTrek._id}`);
+
+}))
+
 app.get('/treks/new', (req, res) => {
       res.render('trekkings/new')
 })
-app.post('/treks/new', catchAsync(async (req, res, next) => {
-      const newTrek = await Trekking(req.body.trekkings);
-      await newTrek.save();
-      // console.log(newTrek);
-      if (!newTrek) {
-            next(err);
-      } else {
-
-            res.redirect(`/treks/${newTrek._id}`);
-      }
-}))
-app.get('/treks/:id', async (req, res, next) => {
+app.get('/treks/:id', catchAsync(async (req, res, next) => {
       const id = req.params.id
       const data = await Trekking.findById({ _id: id });
       res.render('trekkings/show', { data });
-});
+}));
 
 app.get('/treks/:id/edit', catchAsync(async (req, res) => {
       const id = req.params.id;
       const trekking = await Trekking.findById({ _id: id });
       res.render('trekkings/edit', { trekking })
 }));
-app.put('/treks/:id', catchAsync(async (req, res) => {
+app.put('/treks/:id', validateTrekking, catchAsync(async (req, res) => {
       const id = req.params.id;
       const data = await Trekking.findByIdAndUpdate({ _id: id }, { ...req.body.trekkings }, { new: true });
       console.log(data);
@@ -91,16 +85,15 @@ app.delete('/treks/:id', catchAsync(async (req, res) => {
 }));
 
 //HANDLES ALL ERRORS
-// app.all(/.*/, (req, res, next) => {
-//       // res.send('404 ERROR YOU STUPID .')
-//       return new ExpressError('Page Not Error', 404)
-// })
+app.use((req, res, next) => {
+      next(new ExpressError('Page Not Error', 404));
+})
 
 //ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
+      console.log(err)
       const { statusCode = 500, message = 'SOMETHING WENT WRONG' } = err;
       res.status(statusCode).render('error', { err })
-      // res.send('OH BOY...THERE IS AN ERROR YOU FUCKING MORON.')
 })
 app.listen(3000, () => {
       console.log('App is running in Port : 3000');
