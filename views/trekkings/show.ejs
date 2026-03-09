@@ -30,5 +30,16 @@
                         </div>
 
                   </div>
+                  <div class="container mt-2">
+                        <h3>Leave a Review</h3>
+                        <form action="/treks/<%= data._id %>/review" method="post">
+                              <label class="form-label" for="rating">Ratings : </label>
+                              <input type="range" class="form-range" min="0" max="5" step="1" name="review[rating]"
+                                    id="rating" />
+                              <label for="body" class="from-label">Reviews : </label>
+                              <textarea name="review[body]" id="body" class="form-control"></textarea>
+                              <button class="mt-2 btn btn-primary">submit</button>
+                        </form>
+                  </div>
             </div>
       </div>

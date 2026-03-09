@@ -10,6 +10,7 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 //VALIDATE SCHEMA MODULE
 const validateTrekking = require('./validateSchema');
+const Review = require('./models/review');
 
 
 
@@ -84,6 +85,19 @@ app.delete('/treks/:id', catchAsync(async (req, res) => {
       res.redirect('/treks');
 }));
 
+//ADDING REVIEWS
+app.post('/treks/:id/review', catchAsync(async (req, res) => {
+      const trek = await Trekking.findById(req.params.id);
+      const { review } = req.body;
+      // console.log(review)
+      const rev = new Review(review);
+      // console.log(rev)
+      trek.reviews.push(rev);
+      await trek.save();
+      await rev.save();
+      res.redirect(`/treks/${trek._id}`)
+
+}));
 //HANDLES ALL ERRORS
 app.use((req, res, next) => {
       next(new ExpressError('Page Not Error', 404));

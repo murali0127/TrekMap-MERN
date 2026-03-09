@@ -513,8 +513,167 @@ module.exports = [
             difficulty: "Moderate",
             image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/ac/5a/37/srisailam-dam.jpg?w=1200&h=-1&s=1',
             permit: "NotRequired"
+      },
+
+
+
+
+      /* ===================== KOLLIMALAI (NAMAKKAL) ===================== */
+      {
+            name: "Arapaleeswarar Temple Trail",
+            location: "Kollimalai",
+            district: "Namakkal",
+            coordinates: { type: "Point", coordinates: [78.3392, 11.2776] },
+            description: "Forest steps trail leading to Arapaleeswarar temple.",
+            image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweo96anMx2E5gWWzjCmfGAr1xUBsqLAyVApq1dW6KCDxh833oLyJzf1ev5AuT067a5b1sYLHk0vHOi6kTIyEgtxcLrIebxKIaWajJFPbCn69olpwQh5XqE1Pg-Wg6MfQoLz5oRj8=s1360-w1360-h1020-rw",
+            difficulty: "Moderate",
+            permit: "NotRequired"
+      },
+      {
+            name: "Agaya Gangai Falls Trek",
+            location: "Kollimalai",
+            district: "Namakkal",
+            coordinates: { type: "Point", coordinates: [78.3398, 11.2745] },
+            description: "1300-step steep trek to a massive waterfall.",
+            image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/0d/5f/bb/agaya-gangai-waterfalls.jpg?w=1400&h=-1&s=1",
+            difficulty: "Hard",
+            permit: "NotRequired"
+      },
+
+      {
+            name: "Seekuparai Viewpoint",
+            location: "Kollimalai",
+            district: "Namakkal",
+            coordinates: { type: "Point", coordinates: [78.3291, 11.2910] },
+            description: "Cliff viewpoint overlooking Kolli valley.",
+            image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/57/7e/da/wonderful-view.jpg?w=1400&h=-1&s=1",
+            difficulty: "Easy",
+            permit: "NotRequired"
+      },
+
+      /* ===================== KRISHNAGIRI / DHARMAPURI ===================== */
+
+      {
+            name: "Melagiri Hills Trek",
+            location: "Denkanikottai",
+            district: "Krishnagiri",
+            coordinates: { type: "Point", coordinates: [77.7865, 12.5515] },
+            description: "Elephant corridor forest trek near Karnataka border.",
+            image: "https://tripxl.com/blog/wp-content/uploads/2024/10/Muthyalamaduvu-Pearl-Valley.jpg",
+            difficulty: "Hard",
+            permit: "OnRequest"
+      },
+
+      {
+            name: "Hogenakkal Falls",
+            location: "Hogenakkal",
+            district: "Dharmapuri",
+            coordinates: { type: "Point", coordinates: [77.7750, 12.1150] },
+            description: "Hogenakkal Falls is a waterfall in South India on the Kaveri river on the border between Dharmapuri district of Tamil Nadu and Chamrajnagar district of Karnataka.",
+            image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1e/bc/e8/67/caption.jpg?w=1400&h=-1&s=1",
+            difficulty: "Moderate",
+            permit: "NotRequired"
+      },
+      {
+            name: "Hogenakkal Boating",
+            location: "Hogenakkal",
+            district: "Dharmapuri",
+            coordinates: { type: "Point", coordinates: [77.7750, 12.1150] },
+            description: "Rocky hill trail overlooking the Hogenakkal waterfalls.",
+            image: "https://d26dp53kz39178.cloudfront.net/media/uploads/products/6_result-1714128650078.webp",
+            difficulty: "Moderate",
+            permit: "NotRequired"
+      },
+
+      /* ===================== MADURAI ===================== */
+
+      {
+            name: "Samanar Hills",
+            location: "Keelakuyilkudi",
+            district: "Madurai",
+            coordinates: { type: "Point", coordinates: [78.0588, 9.8674] },
+            description: "Ancient Jain cave trekking hill near Madurai.",
+            image: "https://miro.medium.com/v2/resize:fit:640/format:webp/1*Ox2nZpUjTCQXPbLPcdpVQQ.jpeg",
+            difficulty: "Easy",
+            permit: "NotRequired"
+      },
+
+      {
+            name: "Arittapatti Hill Trek",
+            location: "Arittapatti",
+            district: "Madurai",
+            coordinates: { type: "Point", coordinates: [78.1678, 10.0304] },
+            description: "Granite hill trek with ancient rock-cut temples.",
+            image: "https://miro.medium.com/v2/resize:fit:3236/format:webp/1*vM0Q7uASdETJbWIXiVJDCA.jpeg",
+            difficulty: "Moderate",
+            permit: "NotRequired"
+      },
+      /* ===================== THENI ===================== */
+
+      {
+            name: "Meghamalai Trek",
+            location: "Meghamalai",
+            district: "Theni",
+            coordinates: { type: "Point", coordinates: [77.3282, 9.6821] },
+            description: "Hidden high-range trek with tea estates and misty hills.",
+            image: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSu-s5LF0C-MD3B7i5JPK6SPw1h1L6h3Shud7PizLt0wuWZbQ0Hs3Yi8byXkO8w31Sgvj1w9S4vDNMtMwwviISaVro&s=19",
+            difficulty: "Moderate",
+            permit: "OnRequest"
+      },
+
+      {
+            name: "Suruli Falls Forest Trail",
+            location: "Cumbum",
+            district: "Theni",
+            coordinates: { type: "Point", coordinates: [77.2650, 9.6700] },
+            description: "Forest trekking route leading to Suruli waterfalls.",
+            image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/56/4f/50/chinna-suruli-falls.jpg?w=1400&h=800&s=1",
+            difficulty: "Easy",
+            permit: "NotRequired"
+      },
+
+      {
+            name: "Kolukkumalai Peak",
+            location: "Bodinayakanur",
+            district: "Theni",
+            coordinates: { type: "Point", coordinates: [77.3006, 10.0883] },
+            description: "One of the highest tea plantations in the world.",
+            image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepzM5QrNuANGHwoMxFE_pKVP7GQQ1Op6iYdk0gPc7a39C2Lislhq4PkfPQTfkHucsSioZdRnbxELazTuzIsYyywKMW928BV2feoovPSI7w2CpbTEHjlNH4V9D22GOUIiUCWfag=s1360-w1360-h1020-rw",
+            difficulty: "Moderate",
+            permit: "OnRequest"
+      },
+
+      /* ===================== NEARBY STATES (GOOD FOR TN USERS) ===================== */
+
+      {
+            name: "Chembra Peak",
+            location: "Wayanad",
+            district: "Kerala",
+            coordinates: { type: "Point", coordinates: [76.2570, 11.5280] },
+            description: "Heart-shaped lake trek in Wayanad hills.",
+            image: "https://preview.redd.it/y6iaec1zgvxz.jpg?auto=webp&s=4173d7457360ae135b3cd1d7f794aec7d12add5d",
+            difficulty: "Moderate",
+            permit: "OnRequest"
+      },
+
+      {
+            name: "Brahmagiri Hills",
+            location: "Coorg",
+            district: "Karnataka",
+            coordinates: { type: "Point", coordinates: [75.9360, 11.9720] },
+            description: "Forest ridge trek in Western Ghats wildlife zone.",
+            image: "https://preview.redd.it/9benoo061s9g1.jpeg?width=1080&crop=smart&auto=webp&s=9b0763a9f57296eaeaa9ad83b5d4f39a9296e1e6",
+            difficulty: "Hard",
+            permit: "OnRequest"
+      },
+      {
+            name: "Irrupu Falls",
+            location: "Coorg",
+            district: "Karnataka",
+            coordinates: { type: "Point", coordinates: [75.9360, 11.9720] },
+            description: "Beautiful water falls located in Brahmagiri hills.",
+            image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepw9s-rKg3TImSZov_pKZuHgIIZZ-dBCHURPYMyZVA1q5EigPZ0gzgnxZCFXsO7F9GYAPEVHs1abB8VNlLF2mx1_WamMaRQVdXIAloIrNao3n6djFOnb8q5F-aIR6yEmHJnjWirxQ=s1360-w1360-h1020-rw",
+            difficulty: "Hard",
+            permit: "OnRequest"
       }
-
-];
-
-
+]; 

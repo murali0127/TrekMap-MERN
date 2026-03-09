@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
+const Review = require('./review');
+const { Schema } = mongoose;
 
 const trekkingSchema = new Schema({
       name: {
@@ -37,7 +37,11 @@ const trekkingSchema = new Schema({
             type: String,
             enum: ["NotRequired", "ForestPass", "CommercialLicense", "SeasonalRestriction", "OnRequest"],
             default: "NotRequired"
-      }
+      },
+      reviews: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+      }]
 })
 Trekking = mongoose.model('Trekking', trekkingSchema);
 module.exports = Trekking;
