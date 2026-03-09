@@ -11,8 +11,7 @@ const ExpressError = require('./utils/ExpressError');
 //VALIDATE SCHEMA MODULE
 const validateTrekking = require('./validateSchema');
 const Review = require('./models/review');
-
-
+const { reviewSchema } = require('./validateSchema')
 
 const app = express();
 
@@ -40,6 +39,16 @@ app.use(express.json());
 //Method-Override
 app.use(methodOverride('_method'));
 
+const validateReview = (req, res, next) => {
+      const { error } = reviewSchema.validate(req.body, { convert: true });
+      if (error) {
+            const msg = error.details.map(el => el.message).join(',');
+            throw new ExpressError(msg, 404);
+      } else {
+            next();
+      }
+}
+
 
 app.get('/', (req, res) => {
       res.render('home');
@@ -63,7 +72,8 @@ app.get('/treks/new', (req, res) => {
 })
 app.get('/treks/:id', catchAsync(async (req, res, next) => {
       const id = req.params.id
-      const data = await Trekking.findById({ _id: id });
+      const data = await Trekking.findById({ _id: id }).populate('reviews');;
+      console.log(data);
       res.render('trekkings/show', { data });
 }));
 
@@ -86,7 +96,7 @@ app.delete('/treks/:id', catchAsync(async (req, res) => {
 }));
 
 //ADDING REVIEWS
-app.post('/treks/:id/review', catchAsync(async (req, res) => {
+app.post('/treks/:id/review', validateReview, catchAsync(async (req, res) => {
       const trek = await Trekking.findById(req.params.id);
       const { review } = req.body;
       // console.log(review)
@@ -96,6 +106,15 @@ app.post('/treks/:id/review', catchAsync(async (req, res) => {
       await trek.save();
       await rev.save();
       res.redirect(`/treks/${trek._id}`)
+
+}));
+
+app.delete('/treks/:id/review/:reviewId', catchAsync(async (req, res) => {
+      const { id, reviewId } = req.params;
+      const trek = await Trekking.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });  //REMOVES THE RFERENCE OF REVIEW IN TREKKING MODEL
+      await Review.findByIdAndDelete(reviewId);
+      res.redirect(`/treks/${trek._id}`);
+
 
 }));
 //HANDLES ALL ERRORS

@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
       <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-6 ">
                   <!--style="width: 25rem;"-->
-                  <div class="card md-3 mt-5">
+                  <div class="card md-3 mt-3 mb-5">
 
                         <img src="<%= data.image %>" style="width:100%;height:25rem" class="card-img-top"
                               alt="<%= data.name %>">
@@ -30,16 +30,41 @@
                         </div>
 
                   </div>
+            </div>
+            <div class="col-6">
+
                   <div class="container mt-2">
                         <h3>Leave a Review</h3>
-                        <form action="/treks/<%= data._id %>/review" method="post">
+                        <form action="/treks/<%= data._id %>/review" method="post" novalidate class="validated-form">
                               <label class="form-label" for="rating">Ratings : </label>
                               <input type="range" class="form-range" min="0" max="5" step="1" name="review[rating]"
                                     id="rating" />
                               <label for="body" class="from-label">Reviews : </label>
-                              <textarea name="review[body]" id="body" class="form-control"></textarea>
+                              <textarea name="review[body]" id="body" class="form-control" required></textarea>
+                              <div class="valid-feedback">
+                                    Looks good!
+                              </div>
                               <button class="mt-2 btn btn-primary">submit</button>
                         </form>
+                        <h5>Reviews :</h5>
+                        <% for(let review of data.reviews) { %>
+                              <div class="card mb-3 p-2">
+
+                                    <div class="card-bdoy">
+                                          <h5 class="card-title">Rating : <%= review.rating %>
+                                          </h5>
+                                          <p>
+                                                <%= review.body %>
+
+                                          </p>
+                                          <form action="/treks/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
+                                                method="POST">
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                          </form>
+                                    </div>
+                              </div>
+                              <% } %>
+
                   </div>
             </div>
       </div>

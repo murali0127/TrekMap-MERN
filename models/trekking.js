@@ -43,6 +43,17 @@ const trekkingSchema = new Schema({
             ref: 'Review'
       }]
 })
+
+
+trekkingSchema.post('findOneAndDelete', async function (document) {
+      if (document) {
+            await Review.deleteMany({
+                  _id: {
+                        $in: document.reviews
+                  }
+            })
+      }
+});
 Trekking = mongoose.model('Trekking', trekkingSchema);
 module.exports = Trekking;
 
