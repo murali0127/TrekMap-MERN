@@ -1,3 +1,61 @@
 <% layout('layouts/boilerplate') %>
 
-      <h1 class="display-3 mt-5">Hello There Welcome to TrekMap.</h1>
+<!-- Hero Section -->
+<section class="hero-section">
+      <div class="container">
+            <div class="row align-items-center min-vh-75">
+                  <div class="col-lg-8 mx-auto text-center">
+                        <h1 class="display-3 fw-bold text-white mb-4 animate-fade-in">
+                              Welcome to <span class="text-primary">TrekMap</span>
+                        </h1>
+                        <p class="lead text-secondary mb-5">
+                              Discover amazing trekking spots, share your adventures, and connect with fellow trekkers.
+                              Your next adventure starts here!
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                              <a href="/treks" class="btn btn-primary btn-lg px-5">
+                                    <i class="bi bi-compass me-2"></i>Explore Treks
+                              </a>
+                              <a href="/treks/new" class="btn btn-outline-light btn-lg px-4">
+                                    <i class="bi bi-plus-circle me-2"></i>Add New
+                              </a>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+      <div class="container">
+            <div class="row g-4">
+                  <div class="col-md-4">
+                        <div class="feature-card text-center p-4 rounded">
+                              <div class="feature-icon mb-3">
+                                    <i class="bi bi-geo-alt fs-1 text-primary"></i>
+                              </div>
+                              <h4>Discover Locations</h4>
+                              <p class="text-secondary">Find the best trekking spots with detailed information about each location.</p>
+                        </div>
+                  </div>
+                  <div class="col-md-4">
+                        <div class="feature-card text-center p-4 rounded">
+                              <div class="feature-icon mb-3">
+                                    <i class="bi bi-chat-heart fs-1 text-primary"></i>
+                              </div>
+                              <h4>Share Reviews</h4>
+                              <p class="text-secondary">Read and write reviews to help others plan their adventures.</p>
+                        </div>
+                  </div>
+                  <div class="col-md-4">
+                        <div class="feature-card text-center p-4 rounded">
+                              <div class="feature-icon mb-3">
+                                    <i class="bi bi-people fs-1 text-primary"></i>
+                              </div>
+                              <h4>Join Community</h4>
+                              <p class="text-secondary">Connect with fellow trekkers and share your experiences.</p>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>

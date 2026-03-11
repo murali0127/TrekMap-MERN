@@ -1,34 +1,80 @@
 <% layout('layouts/boilerplate') %>
-      <div class="row">
-            <h1 class="text-center">New Trekking</h1>
-            <div class="col-6 offset-3">
-                  <form action="/treks" method="post" novalidate class="validated-form">
-                        <div class="contianer-fluid">
-                              <label for="name" class="form-label">Name : </label>
-                              <input type="text" id="name" class="form-control" name="trekking[name]" required>
-                        </div>
-                        <div class="contianer-fluid">
-                              <label for="location" class="form-label">Location : </label>
-                              <input type="text" id="name" class="form-control" name="trekking[location]" required>
-                        </div>
-                        <div class="contianer-fluid">
-                              <label for="district" class="form-label">District : </label>
-                              <input type="text" id="district" class="form-control" name="trekking[district]" required>
-                        </div>
-                        <div class="contianer-fluid">
-                              <label for="image" class="form-label">Image URL : </label>
-                              <input type="text" id="image" class="form-control" name="trekking[image]" required>
-                        </div>
-                        <div class="contianer-fluid">
-                              <label for="description" class="form-label">Description : </label>
-                              <textarea type="text" id="description" class="form-control"
-                                    name="trekking[description]"></textarea>
-                        </div>
-                        <div>
-                              <button type="submit" class="btn btn-primary mt-5">Add New</button>
-                        </div>
-                  </form>
 
+<div class="container mt-4 mb-5">
+      <div class="row justify-content-center">
+            <div class="col-lg-8">
+                  <div class="card shadow-sm">
+                        <div class="card-header bg-primary">
+                              <h3 class="mb-0 text-white">
+                                    <i class="bi bi-plus-circle me-2"></i>Add New Trekking Spot
+                              </h3>
+                        </div>
+                        <div class="card-body p-4">
+                              <form action="/treks" method="post" novalidate class="validated-form">
+                                    <div class="row g-3">
+                                          <!-- Name -->
+                                          <div class="col-md-6">
+                                                <label for="name" class="form-label">
+                                                      Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="name" class="form-control"
+                                                      name="trekking[name]" placeholder="Enter trek name" required>
+                                                <div class="invalid-feedback">Please enter a name.</div>
+                                          </div>
+
+                                          <!-- Location -->
+                                          <div class="col-md-6">
+                                                <label for="location" class="form-label">
+                                                      Location <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="location" class="form-control"
+                                                      name="trekking[location]" placeholder="Enter location" required>
+                                                <div class="invalid-feedback">Please enter a location.</div>
+                                          </div>
+
+                                          <!-- District -->
+                                          <div class="col-md-6">
+                                                <label for="district" class="form-label">
+                                                      District <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="district" class="form-control"
+                                                      name="trekking[district]" placeholder="Enter district" required>
+                                                <div class="invalid-feedback">Please enter a district.</div>
+                                          </div>
+
+                                          <!-- Image URL -->
+                                          <div class="col-md-6">
+                                                <label for="image" class="form-label">
+                                                      Image URL <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="url" id="image" class="form-control"
+                                                      name="trekking[image]" placeholder="https://example.com/image.jpg" required>
+                                                <div class="invalid-feedback">Please enter a valid image URL.</div>
+                                          </div>
+
+                                          <!-- Description -->
+                                          <div class="col-12">
+                                                <label for="description" class="form-label">Description</label>
+                                                <textarea id="description" class="form-control" rows="4"
+                                                      name="trekking[description]"
+                                                      placeholder="Describe the trekking spot..."></textarea>
+                                          </div>
+
+                                          <!-- Submit Button -->
+                                          <div class="col-12 mt-4">
+                                                <div class="d-flex gap-2">
+                                                      <button type="submit" class="btn btn-primary btn-lg">
+                                                            <i class="bi bi-plus-circle me-2"></i>Add Trekking Spot
+                                                      </button>
+                                                      <a href="/treks" class="btn btn-outline-secondary btn-lg">
+                                                            Cancel
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </form>
+                        </div>
+                  </div>
             </div>
       </div>
-      </div>
+</div>

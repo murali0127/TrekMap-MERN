@@ -1,3 +1,284 @@
-/* body {
-      background: violet;
-} */
+/* =============================================
+   TrekMap - Custom Styles
+   ============================================= */
+
+/* ---------- CSS Variables ---------- */
+:root {
+    --primary-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --card-hover-shadow: 0 10px 40px rgba(13, 110, 253, 0.2);
+    --transition-smooth: all 0.3s ease;
+}
+
+/* ---------- Global Styles ---------- */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--primary-gradient);
+    min-height: 100vh;
+}
+
+/* ---------- Navbar Styles ---------- */
+.navbar {
+    padding: 1rem 0;
+    transition: var(--transition-smooth);
+}
+
+.navbar-brand {
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem;
+    transition: var(--transition-smooth);
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Hero Section ---------- */
+.hero-section {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, transparent 100%);
+    padding: 4rem 0;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.min-vh-75 {
+    min-height: 50vh;
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Feature Cards ---------- */
+.feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.feature-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    border-color: var(--bs-primary);
+}
+
+/* ---------- Trek Cards ---------- */
+.trek-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+    overflow: hidden;
+}
+
+.trek-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--bs-primary);
+}
+
+.card-img-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.trek-card:hover .card-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.card-img-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.trek-card:hover .card-img-overlay {
+    opacity: 1;
+}
+
+/* ---------- Large Card Images (Show Page) ---------- */
+.card-img-wrapper-large {
+    height: 350px;
+    overflow: hidden;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.card-img-wrapper-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------- Info Boxes ---------- */
+.info-box {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.info-box:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--bs-primary);
+}
+
+/* ---------- Review Cards ---------- */
+.review-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.star-rating i {
+    font-size: 1rem;
+    margin-right: 2px;
+}
+
+/* ---------- Forms ---------- */
+.validated-form input:focus,
+.validated-form textarea:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb-item a {
+    color: var(--bs-primary);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Alerts ---------- */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.alert-success {
+    background: rgba(25, 135, 84, 0.2);
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.footer a:hover {
+    color: var(--bs-primary) !important;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0a58ca;
+}
+
+/* ---------- Responsive Adjustments ---------- */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh;
+        padding: 2rem 0;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .card-img-wrapper {
+        height: 180px;
+    }
+
+    .card-img-wrapper-large {
+        height: 250px;
+    }
+}
+
+/* ---------- Empty State ---------- */
+.empty-state {
+    padding: 3rem 0;
+}

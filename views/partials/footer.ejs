@@ -1,5 +1,15 @@
-<footer class="footer bg-light mt-auto">
+<footer class="footer bg-dark border-top border-secondary mt-auto py-4">
       <div class="container">
-            <span class="text-secondary py-3">&copy;TrekMap</span>
+            <div class="row align-items-center">
+                  <div class="col-md-6 text-center text-md-start">
+                        <span class="text-secondary">
+                              &copy; <%= new Date().getFullYear() %> TrekMap. All rights reserved.
+                        </span>
+                  </div>
+                  <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                        <a href="/treks" class="text-secondary text-decoration-none me-3">Explore</a>
+                        <a href="/treks/new" class="text-secondary text-decoration-none me-3">Add Trek</a>
+                  </div>
+            </div>
       </div>
 </footer>
