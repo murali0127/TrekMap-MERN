@@ -6,6 +6,7 @@ const { trekSchema } = require('../validateSchema');
 const falsh = require('connect-flash');
 const Trekking = require('../models/trekking');
 const mongoose = require('mongoose');
+const { isLoggedIn } = require('../middleware')
 
 const validateTrekking = (req, res, next) => {
       const { error } = trekSchema.validate(req.body);
@@ -17,7 +18,7 @@ const validateTrekking = (req, res, next) => {
       }
 }
 
-router.get('/', catchAsync(async (req, res) => {
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
       const trekkings = await Trekking.find({});
       res.render('trekkings/index', { trekkings });
 }));
@@ -31,7 +32,7 @@ router.post('/', validateTrekking, catchAsync(async (req, res, next) => {
 
 }))
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
       res.render('trekkings/new')
 })
 router.get('/:id', catchAsync(async (req, res, next) => {
@@ -52,7 +53,7 @@ router.get('/:id', catchAsync(async (req, res, next) => {
 
 }));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
       const id = req.params.id;
       const trekking = await Trekking.findById({ _id: id });
       res.render('trekkings/edit', { trekking })

@@ -35,7 +35,7 @@ const trekkingSchema = new Schema({
       },
       permit: {
             type: String,
-            enum: ["NotRequired", "ForestPass", "CommercialLicense", "SeasonalRestriction", "OnRequest"],
+            enum: ["NotRequired", "Required", "ForestPass", "CommercialLicense", "SeasonalRestriction", "OnRequest"],
             default: "NotRequired"
       },
       reviews: [{

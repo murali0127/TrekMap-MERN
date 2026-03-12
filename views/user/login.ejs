@@ -1,0 +1,50 @@
+<% layout('layouts/boilerplate') %>
+
+      <div class="container mt-4 mb-5">
+            <div class="row justify-content-center">
+                  <div class="col-lg-8">
+                        <div class="card shadow-sm">
+                              <div class="card-header bg-danger">
+                                    <h3 class="mb-0 text-white">
+                                          Login
+                                    </h3>
+                              </div>
+                              <div class="card-body p-4">
+                                    <form action="/login" method="post" novalidate class="validated-form">
+
+                                          <!-- Username -->
+                                          <div class="col-md-6">
+                                                <label for="username" class="form-label">
+                                                      Username <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="username" class="form-control" name="username"
+                                                      placeholder="Enter username" required>
+                                                <div class="invalid-feedback">Please enter a username.</div>
+                                          </div>
+                                          <!-- Password -->
+                                          <div class="col-md-6">
+                                                <label for="password" class="form-label">
+                                                      Password <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" id="location" class="form-control" name="password"
+                                                      placeholder="Enter password" required>
+                                                <div class="invalid-feedback">Please enter a password.</div>
+                                          </div>
+
+
+                                          <!-- Submit Button -->
+                                          <div class="col-12 mt-4">
+                                                <div class="d-flex gap-2">
+                                                      <button type="submit" class="btn btn-primary btn-lg">
+                                                            Login
+                                                      </button>
+
+                                                </div>
+                                          </div>
+                              </div>
+                              </form>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      </div>

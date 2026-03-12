@@ -12,8 +12,13 @@ const ExpressError = require('./utils/ExpressError');
 const { reviewSchema } = require('./validateSchema')
 const Review = require('./models/review');
 //ROUTER
+const userRouter = require('./routes/user');
 const trekRouter = require('./routes/trek');
 const reviewRouter = require('./routes/review')
+
+//AUTHENTICATION
+const passport = require('passport');
+const LocalStratergy = require('passport-local');
 
 //SESSION
 const session = require('express-session');
@@ -21,6 +26,7 @@ const { expression } = require('joi');
 
 //FLASH
 const flash = require('connect-flash');
+const User = require('./models/user');
 
 const app = express();
 
@@ -64,14 +70,24 @@ app.use(session(sessionConfiguration));
 
 app.use(flash());
 
+//CONFIGURING AUTHENTICATION
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStratergy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
+      res.locals.currentUser = req.user
       res.locals.success = req.flash('success');
       res.locals.error = req.flash('error')
       next();
 })
 
 //Routes
+app.use('/', userRouter);
 app.use('/treks', trekRouter);
 app.use('/treks/:id/review', reviewRouter);
 
@@ -80,7 +96,12 @@ app.get('/', (req, res) => {
       res.render('home');
 })
 
+app.get('/fakeUser', async (req, res) => {
+      const user = new User({ email: 'smurali@gmail.com', username: 'Murali' });
+      const newUser = await User.register(user, 'murali@2005');
+      res.send(newUser)
 
+})
 
 //ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
