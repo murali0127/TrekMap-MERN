@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
 const { Schema } = mongoose;
+const User = require('./user')
 
 const trekkingSchema = new Schema({
       name: {
@@ -37,6 +38,10 @@ const trekkingSchema = new Schema({
             type: String,
             enum: ["NotRequired", "Required", "ForestPass", "CommercialLicense", "SeasonalRestriction", "OnRequest"],
             default: "NotRequired"
+      },
+      author: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
       },
       reviews: [{
             type: Schema.Types.ObjectId,

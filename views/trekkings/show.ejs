@@ -1,137 +1,185 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container mt-4 mb-5">
-      <!-- Breadcrumb -->
-      <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="/">Home</a></li>
-                  <li class="breadcrumb-item"><a href="/treks">Trekkings</a></li>
-                  <li class="breadcrumb-item active"><%= data.name %></li>
-            </ol>
-      </nav>
+      <div class="container mt-4 mb-5">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                  <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/treks">Trekkings</a></li>
+                        <li class="breadcrumb-item active">
+                              <%= data.name %>
+                        </li>
+                  </ol>
+            </nav>
 
-      <div class="row g-4">
-            <!-- Trek Details -->
-            <div class="col-lg-7">
-                  <div class="card shadow-sm">
-                        <div class="card-img-wrapper-large">
-                              <img src="<%= data.image %>" class="card-img-top" alt="<%= data.name %>">
-                        </div>
-                        <div class="card-body">
-                              <h1 class="card-title display-5 fw-bold"><%= data.name %></h1>
-                              <p class="card-text lead text-secondary"><%= data.description %></p>
-
-                              <div class="row g-3 mt-3">
-                                    <div class="col-sm-6">
-                                          <div class="info-box p-3 rounded bg-dark">
-                                                <i class="bi bi-geo-alt text-primary fs-4"></i>
-                                                <h6 class="mt-2 mb-1">Location</h6>
-                                                <p class="mb-0 text-secondary"><%= data.location %></p>
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                          <div class="info-box p-3 rounded bg-dark">
-                                                <i class="bi bi-map text-primary fs-4"></i>
-                                                <h6 class="mt-2 mb-1">District</h6>
-                                                <p class="mb-0 text-secondary"><%= data.district %></p>
-                                          </div>
-                                    </div>
+            <div class="row g-4">
+                  <!-- Trek Details -->
+                  <div class="col-lg-7">
+                        <div class="card shadow-sm">
+                              <div class="card-img-wrapper-large">
+                                    <img src="<%= data.image %>" class="card-img-top" alt="<%= data.name %>">
                               </div>
+                              <div class="card-body">
+                                    <h1 class="card-title display-5 fw-bold">
+                                          <%= data.name %>
+                                    </h1>
+                                    <p class="card-text lead text-secondary">
+                                          <%= data.description %>
+                                    </p>
+                                    <% if(data.author){ %>
+                                          <p class="card-text lead text-secondary">
+                                                Sumbitted by -<%= data.author.username %>
+                                          </p>
+                                          <% } %>
 
-                              <div class="d-flex gap-2 mt-4">
-                                    <a href="/treks/<%= data._id %>/edit" class="btn btn-warning">
-                                          <i class="bi bi-pencil me-2"></i>Edit
-                                    </a>
-                                    <form action="/treks/<%= data._id %>?_method=DELETE" method="post" class="d-inline">
-                                          <button type="submit" class="btn btn-outline-danger"
-                                                onclick="return confirm('Are you sure you want to delete this trek?')">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                          </button>
-                                    </form>
-                                    <a href="/treks" class="btn btn-outline-secondary ms-auto">
-                                          <i class="bi bi-arrow-left me-2"></i>Back to All
-                                    </a>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-
-            <!-- Reviews Section -->
-            <div class="col-lg-5">
-                  <div class="card shadow-sm">
-                        <div class="card-header bg-primary">
-                              <h4 class="mb-0 text-white">
-                                    <i class="bi bi-chat-heart me-2"></i>Reviews
-                              </h4>
-                        </div>
-                        <div class="card-body">
-                              <!-- Review Form -->
-                              <h6 class="mb-3">Leave a Review</h6>
-                              <form action="/treks/<%= data._id %>/review" method="post" novalidate class="validated-form">
-                                    <div class="mb-3">
-                                          <label class="form-label">Rating</label>
-                                          <div class="rating-input">
-                                                <input type="range" class="form-range" min="0" max="5" step="1"
-                                                      name="review[rating]" id="rating" value="5" />
-                                                <div class="d-flex justify-content-between">
-                                                      <small>0</small>
-                                                      <small>5</small>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    <div class="mb-3">
-                                          <label for="body" class="form-label">Your Review</label>
-                                          <textarea name="review[body]" id="body" class="form-control" rows="3"
-                                                placeholder="Share your experience..." required></textarea>
-                                          <div class="invalid-feedback">Please write your review before submitting.</div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                          <i class="bi bi-send me-2"></i>Submit Review
-                                    </button>
-                              </form>
-
-                              <hr class="my-4">
-
-                              <!-- Reviews List -->
-                              <h6 class="mb-3">
-                                    <% if(data.reviews && data.reviews.length > 0) { %>
-                                          <span class="badge bg-secondary"><%= data.reviews.length %> Reviews</span>
-                                    <% } %>
-                              </h6>
-
-                              <% if(data.reviews && data.reviews.length > 0) { %>
-                                    <div class="reviews-list">
-                                          <% for(let review of data.reviews) { %>
-                                                <div class="review-card p-3 mb-3 rounded bg-dark">
-                                                      <div class="d-flex justify-content-between align-items-start">
-                                                            <div class="star-rating">
-                                                                  <% for(let i = 1; i <= 5; i++) { %>
-                                                                        <% if(i <= review.rating) { %>
-                                                                              <i class="bi bi-star-fill text-warning"></i>
-                                                                        <% } else { %>
-                                                                              <i class="bi bi-star text-secondary"></i>
-                                                                        <% } %>
-                                                                  <% } %>
+                                                <div class="row g-3 mt-3">
+                                                      <div class="col-sm-6">
+                                                            <div class="info-box p-3 rounded bg-dark">
+                                                                  <i class="bi bi-geo-alt text-primary fs-4"></i>
+                                                                  <h6 class="mt-2 mb-1">Location</h6>
+                                                                  <p class="mb-0 text-secondary">
+                                                                        <%= data.location %>
+                                                                  </p>
                                                             </div>
-                                                            <form action="/treks/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
-                                                                  method="POST">
-                                                                  <button class="btn btn-sm btn-outline-danger">
-                                                                        <i class="bi bi-trash"></i>
+                                                      </div>
+                                                      <div class="col-sm-6">
+                                                            <div class="info-box p-3 rounded bg-dark">
+                                                                  <i class="bi bi-map text-primary fs-4"></i>
+                                                                  <h6 class="mt-2 mb-1">District</h6>
+                                                                  <p class="mb-0 text-secondary">
+                                                                        <%= data.district %>
+                                                                  </p>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <% if(currentUser && data.author &&
+                                                      data.author.equals(currentUser._id)){ %>
+
+                                                      <div class="d-flex gap-2 mt-4">
+                                                            <a href="/treks/<%= data._id %>/edit"
+                                                                  class="btn btn-warning">
+                                                                  <i class="bi bi-pencil me-2"></i>Edit
+                                                            </a>
+                                                            <form action="/treks/<%= data._id %>?_method=DELETE"
+                                                                  method="post" class="d-inline">
+                                                                  <button type="submit" class="btn btn-outline-danger"
+                                                                        onclick="return confirm('Are you sure you want to delete this trek?')">
+                                                                        <i class="bi bi-trash me-2"></i>Delete
                                                                   </button>
                                                             </form>
                                                       </div>
-                                                      <p class="mb-0 mt-2"><%= review.body %></p>
+                                                      <% } %>
+
+                                                            <a href="/treks"
+                                                                  class="btn btn-outline-secondary ms-auto mt-4">
+                                                                  <i class="bi bi-arrow-left me-2"></i>Back to All
+                                                            </a>
+                              </div>
+                        </div>
+                  </div>
+
+                  <!-- Reviews Section -->
+                  <div class="col-lg-5">
+                        <div class="card shadow-sm">
+                              <div class="card-header bg-primary">
+                                    <h4 class="mb-0 text-white">
+                                          <i class="bi bi-chat-heart me-2"></i>Reviews
+                                    </h4>
+                              </div>
+
+                              <div class="card-body">
+                                    <% if(currentUser) { %>
+                                          <!-- Review Form -->
+                                          <h6 class="mb-3">Leave a Review</h6>
+                                          <form action="/treks/<%= data._id %>/review" method="post" novalidate
+                                                class="validated-form">
+                                                <div class="mb-3">
+                                                      <label class="form-label">Rating</label>
+                                                      <div class="rating-input">
+                                                            <input type="range" class="form-range" min="0" max="5"
+                                                                  step="1" name="review[rating]" id="rating"
+                                                                  value="5" />
+                                                            <div class="d-flex justify-content-between">
+                                                                  <small>0</small>
+                                                                  <small>5</small>
+                                                            </div>
+                                                      </div>
                                                 </div>
+                                                <div class="mb-3">
+                                                      <label for="body" class="form-label">Your Review</label>
+                                                      <textarea name="review[body]" id="body" class="form-control"
+                                                            rows="3" placeholder="Share your experience..."
+                                                            required></textarea>
+                                                      <div class="invalid-feedback">Please write your review before
+                                                            submitting.</div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">
+                                                      <i class="bi bi-send me-2"></i>Submit Review
+                                                </button>
+                                          </form>
+
                                           <% } %>
-                                    </div>
-                              <% } else { %>
-                                    <div class="text-center py-4 text-secondary">
-                                          <i class="bi bi-chat-square display-4"></i>
-                                          <p class="mt-2">No reviews yet. Be the first to review!</p>
-                                    </div>
-                              <% } %>
+                                                <hr class="my-4">
+
+                                                <!-- Reviews List -->
+                                                <h6 class="mb-3">
+                                                      <% if(data.reviews && data.reviews.length> 0) { %>
+                                                            <span class="badge bg-secondary">
+                                                                  <%= data.reviews.length %> Reviews
+                                                            </span>
+                                                            <% } %>
+                                                </h6>
+
+                                                <% if(data.reviews && data.reviews.length> 0) { %>
+                                                      <div class="reviews-list">
+                                                            <% for(let review of data.reviews) { %>
+                                                                  <div class="review-card p-3 mb-3 rounded bg-dark">
+                                                                        <div
+                                                                              class="d-flex justify-content-between align-items-start">
+                                                                              <div class="star-rating">
+                                                                                    <% for(let i=1; i <=5; i++) { %>
+                                                                                          <% if(i <=review.rating) { %>
+                                                                                                <i
+                                                                                                      class="bi bi-star-fill text-warning"></i>
+                                                                                                <% } else { %>
+                                                                                                      <i
+                                                                                                            class="bi bi-star text-secondary"></i>
+                                                                                                      <% } %>
+                                                                                                            <% } %>
+                                                                              </div>
+                                                                              <% if(currentUser &&
+                                                                                    review.author.equals(currentUser._id)){
+                                                                                    %>
+                                                                                    <form action="/treks/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
+                                                                                          method="POST">
+                                                                                          <button
+                                                                                                class="btn btn-sm btn-outline-danger">
+                                                                                                <i
+                                                                                                      class="bi bi-trash"></i>
+                                                                                          </button>
+                                                                                    </form>
+                                                                                    <% } %>
+                                                                        </div>
+                                                                        <p class="mb-0 mt-2">
+                                                                              <%= review.body %>
+                                                                        </p>
+                                                                        <% if(review.author){ %>
+                                                                              <p class="mb-0 mt-2 text-secondary">By -
+                                                                                    <%= review.author.username %>
+                                                                              </p>
+                                                                              <% } %>
+                                                                  </div>
+                                                                  <% } %>
+                                                      </div>
+                                                      <% } else { %>
+                                                            <div class="text-center py-4 text-secondary">
+                                                                  <i class="bi bi-chat-square display-4"></i>
+                                                                  <p class="mt-2">No reviews yet. Be the first to
+                                                                        review!</p>
+                                                            </div>
+                                                            <% } %>
+                              </div>
                         </div>
                   </div>
             </div>
       </div>
-</div>

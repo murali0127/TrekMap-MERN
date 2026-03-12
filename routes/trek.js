@@ -6,17 +6,10 @@ const { trekSchema } = require('../validateSchema');
 const falsh = require('connect-flash');
 const Trekking = require('../models/trekking');
 const mongoose = require('mongoose');
-const { isLoggedIn } = require('../middleware')
+const { isLoggedIn, isAuthorize, validateTrekking } = require('../middleware')
 
-const validateTrekking = (req, res, next) => {
-      const { error } = trekSchema.validate(req.body);
-      if (error) {
-            const msg = error.details.map(el => el.message).join(',');
-            throw new ExpressError(msg, 400)
-      } else {
-            next();
-      }
-}
+
+
 
 router.get('/', isLoggedIn, catchAsync(async (req, res) => {
       const trekkings = await Trekking.find({});
@@ -24,8 +17,9 @@ router.get('/', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 router.post('/', validateTrekking, catchAsync(async (req, res, next) => {
-      console.log(req.body);
+      // console.log(req.body);
       const newTrek = new Trekking(req.body.trekking);
+      newTrek.author = req.user._id;
       await newTrek.save();
       req.flash('success', 'Succesfully created new Trekking.')
       res.redirect(`/treks/${newTrek._id}`);
@@ -41,8 +35,13 @@ router.get('/:id', catchAsync(async (req, res, next) => {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks');
       }
-
-      const data = await Trekking.findById(id).populate('reviews');
+      const data = await Trekking.findById(id).populate('reviews').populate('author').populate({
+            path: 'reviews',
+            populate: {
+                  path: 'author'
+            }
+      });
+      console.log(data)
       if (data === null) {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks')
@@ -53,19 +52,23 @@ router.get('/:id', catchAsync(async (req, res, next) => {
 
 }));
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-      const id = req.params.id;
-      const trekking = await Trekking.findById({ _id: id });
+router.get('/:id/edit', isLoggedIn, isAuthorize, catchAsync(async (req, res) => {
+      const trekking = await Trekking.findById(req.params.id).populate('author');
+      if (!trekking) {
+            req.falsh('error', 'Trekking not found.');
+            return res.redirect('/treks')
+      }
+
       res.render('trekkings/edit', { trekking })
 }));
-router.put('/:id', validateTrekking, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthorize, validateTrekking, catchAsync(async (req, res) => {
       const id = req.params.id;
       const data = await Trekking.findByIdAndUpdate({ _id: id }, { ...req.body.trekking }, { new: true });
-      res.flash('success', 'Updated successfully')
+      req.flash('success', 'Updated successfully')
       res.redirect(`/treks/${id}`)
 }));
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthorize, catchAsync(async (req, res) => {
       const id = req.params.id;
       const deleted = await Trekking.findByIdAndDelete(id);
       req.flash('success', 'Successfully deleted Trekking.')

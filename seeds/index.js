@@ -26,6 +26,7 @@ const seedDB = async () => {
       //       })
       //       await trek.save();
       // }
+      await Trekking.deleteMany({});
       const seedData = await Trekking.insertMany(data);
       // await seedData.save();
 }

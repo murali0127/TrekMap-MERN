@@ -1,79 +1,85 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="container mt-4 mb-5">
-      <div class="row justify-content-center">
-            <div class="col-lg-8">
-                  <div class="card shadow-sm">
-                        <div class="card-header bg-warning">
-                              <h3 class="mb-0">
-                                    <i class="bi bi-pencil me-2"></i>Edit <%= trekking.name %>
-                              </h3>
-                        </div>
-                        <div class="card-body p-4">
-                              <form action="/treks/<%= trekking._id %>?_method=PUT" method="post" novalidate class="validated-form">
-                                    <div class="row g-3">
-                                          <!-- Name -->
-                                          <div class="col-md-6">
-                                                <label for="name" class="form-label">
-                                                      Name <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" id="name" class="form-control"
-                                                      name="trekkings[name]" value="<%= trekking.name %>" required>
-                                                <div class="invalid-feedback">Please enter a name.</div>
-                                          </div>
+      <div class="container mt-4 mb-5">
+            <div class="row justify-content-center">
+                  <div class="col-lg-8">
+                        <div class="card shadow-sm">
+                              <div class="card-header bg-warning">
+                                    <h3 class="mb-0">
+                                          <i class="bi bi-pencil me-2"></i>Edit <%= trekking.name %>
+                                    </h3>
+                              </div>
+                              <div class="card-body p-4">
+                                    <form action="/treks/<%= trekking._id %>?_method=PUT" method="post" novalidate
+                                          class="validated-form">
+                                          <div class="row g-3">
+                                                <!-- Name -->
+                                                <div class="col-md-6">
+                                                      <label for="name" class="form-label">
+                                                            Name <span class="text-danger">*</span>
+                                                      </label>
+                                                      <input type="text" id="name" class="form-control"
+                                                            name="trekking[name]" value="<%= trekking.name %>" required>
+                                                      <div class="invalid-feedback">Please enter a name.</div>
+                                                </div>
 
-                                          <!-- Location -->
-                                          <div class="col-md-6">
-                                                <label for="location" class="form-label">
-                                                      Location <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" id="location" class="form-control"
-                                                      name="trekkings[location]" value="<%= trekking.location %>" required>
-                                                <div class="invalid-feedback">Please enter a location.</div>
-                                          </div>
+                                                <!-- Location -->
+                                                <div class="col-md-6">
+                                                      <label for="location" class="form-label">
+                                                            Location <span class="text-danger">*</span>
+                                                      </label>
+                                                      <input type="text" id="location" class="form-control"
+                                                            name="trekking[location]" value="<%= trekking.location %>"
+                                                            required>
+                                                      <div class="invalid-feedback">Please enter a location.</div>
+                                                </div>
 
-                                          <!-- District -->
-                                          <div class="col-md-6">
-                                                <label for="district" class="form-label">
-                                                      District <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" id="district" class="form-control"
-                                                      name="trekkings[district]" value="<%= trekking.district %>" required>
-                                                <div class="invalid-feedback">Please enter a district.</div>
-                                          </div>
+                                                <!-- District -->
+                                                <div class="col-md-6">
+                                                      <label for="district" class="form-label">
+                                                            District <span class="text-danger">*</span>
+                                                      </label>
+                                                      <input type="text" id="district" class="form-control"
+                                                            name="trekking[district]" value="<%= trekking.district %>"
+                                                            required>
+                                                      <div class="invalid-feedback">Please enter a district.</div>
+                                                </div>
 
-                                          <!-- Image URL -->
-                                          <div class="col-md-6">
-                                                <label for="image" class="form-label">
-                                                      Image URL <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="url" id="image" class="form-control"
-                                                      name="trekkings[image]" value="<%= trekking.image %>" required>
-                                                <div class="invalid-feedback">Please enter a valid image URL.</div>
-                                          </div>
+                                                <!-- Image URL -->
+                                                <div class="col-md-6">
+                                                      <label for="image" class="form-label">
+                                                            Image URL <span class="text-danger">*</span>
+                                                      </label>
+                                                      <input type="url" id="image" class="form-control"
+                                                            name="trekking[image]" value="<%= trekking.image %>"
+                                                            required>
+                                                      <div class="invalid-feedback">Please enter a valid image URL.
+                                                      </div>
+                                                </div>
 
-                                          <!-- Description -->
-                                          <div class="col-12">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea id="description" class="form-control" rows="4"
-                                                      name="trekkings[description]"><%= trekking.description %></textarea>
-                                          </div>
+                                                <!-- Description -->
+                                                <div class="col-12">
+                                                      <label for="description" class="form-label">Description</label>
+                                                      <textarea id="description" class="form-control" rows="4"
+                                                            name="trekking[description]"><%= trekking.description %></textarea>
+                                                </div>
 
-                                          <!-- Submit Button -->
-                                          <div class="col-12 mt-4">
-                                                <div class="d-flex gap-2">
-                                                      <button type="submit" class="btn btn-warning btn-lg">
-                                                            <i class="bi bi-check-circle me-2"></i>Save Changes
-                                                      </button>
-                                                      <a href="/treks/<%= trekking._id %>" class="btn btn-outline-secondary btn-lg">
-                                                            Cancel
-                                                      </a>
+                                                <!-- Submit Button -->
+                                                <div class="col-12 mt-4">
+                                                      <div class="d-flex gap-2">
+                                                            <button type="submit" class="btn btn-warning btn-lg">
+                                                                  <i class="bi bi-check-circle me-2"></i>Save Changes
+                                                            </button>
+                                                            <a href="/treks/<%= trekking._id %>"
+                                                                  class="btn btn-outline-secondary btn-lg">
+                                                                  Cancel
+                                                            </a>
+                                                      </div>
                                                 </div>
                                           </div>
-                                    </div>
-                              </form>
+                                    </form>
+                              </div>
                         </div>
                   </div>
             </div>
       </div>
-</div>
