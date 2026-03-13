@@ -1,6 +1,4 @@
-/* =============================================
-   TrekMap - Custom Styles (Nature Adventure Theme)
-   ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&family=Delius&family=Luckiest+Guy&display=swap');
 
 /* ---------- CSS Variables ---------- */
 :root {
@@ -73,6 +71,7 @@ body.theme-dark {
 .navbar-brand {
     letter-spacing: 1px;
     color: var(--shadow-md) !important;
+    font-family: 'Climate Crisis';
 }
 
 .nav-link {
@@ -894,7 +893,7 @@ body.theme-light {
 
     --bg-gradient: linear-gradient(135deg, #004643 0%, #005a4f 50%, #003830 100%);
     --bg-main: #F0EDE5;
-    --bg-card: rgba(240, 237, 229, 0.9);
+    --bg-card: #222222;
     --bg-dark: #e5e2db;
     --text-primary: #1a1a1a;
     --text-secondary: #004643;
@@ -902,6 +901,10 @@ body.theme-light {
     --border-color: rgba(0, 70, 67, 0.3);
     --shadow-glow: 0 0 30px rgba(0, 70, 67, 0.15);
     --card-hover-shadow: 0 25px 50px -12px rgba(0, 70, 67, 0.15);
+}
+
+body.theme-light {
+    --bg-gradient: #F0EDE5;
 }
 
 body.theme-light .navbar {
@@ -924,8 +927,14 @@ body.theme-light .navbar .nav-link:hover {
 body.theme-light .trek-card,
 body.theme-light .card,
 body.theme-light .review-card {
-    background: rgba(240, 237, 229, 0.85);
+    background: rgba(132, 133, 132, 0.85);
     border-color: rgba(0, 70, 67, 0.2);
+    color: var(--text-secondary);
+}
+
+body.theme-light.feature-card {
+    /* background: rgba(0, 70, 67, 0.05) */
+    background: var(--primary-light);
 }
 
 body.theme-light .info-box {
@@ -945,7 +954,7 @@ body.theme-light .form-control:focus {
 }
 
 body.theme-light .footer {
-    background: rgba(0, 70, 67, 0.1) !important;
+    background: linear-gradient(135deg, rgba(0, 70, 67, 0.95) 0%, rgba(3, 91, 88, 0.95) 100%) !important;
     border-top-color: rgba(0, 70, 67, 0.2);
 }
 
@@ -980,6 +989,11 @@ body.theme-light .modal-content {
 
 body.theme-light .modal-title {
     color: var(--text-primary);
+}
+
+body.theme-light .btn {
+    background: #047857;
+    color: #222222;
 }
 
 body.theme-light .btn-close {
