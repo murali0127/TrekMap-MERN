@@ -2,6 +2,7 @@ const session = require('express-session');
 const ExpressError = require('./utils/ExpressError');
 const { reviewSchema } = require('./validateSchema')
 const Trekking = require('./models/trekking');
+const { trekSchema } = require('./models/trekking')
 const { Review } = require('./models/review');
 
 //STORE RETURN URL IN SESSION MIDDLEWARE

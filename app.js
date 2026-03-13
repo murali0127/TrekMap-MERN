@@ -28,6 +28,9 @@ const { expression } = require('joi');
 const flash = require('connect-flash');
 const User = require('./models/user');
 
+//MONGO SANITIZATION (Adding Security)
+const mongooseSanitize = require('express-mongo-sanitize');
+
 const app = express();
 
 //Connect MongoDB
@@ -51,17 +54,22 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+
+
 //Method-Override
 app.use(methodOverride('_method'));
 
 //Configure Session
 
 const sessionConfiguration = {
+      name: 'session',
       secret: 'thisismysecretkey',
       resave: false,
       saveUninitialized: true,
       cookie: {
             httpOnly: true,
+            // secure : true,
             expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
             maxAge: 1000 * 60 * 60 * 24 * 7
       }
@@ -78,6 +86,14 @@ passport.use(new LocalStratergy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Sanitization - MongoDB Injection Prevention
+// app.use(mongooseSanitize({
+//     replaceWith: '_',
+//     onSanitize: ({ req, res, key }) => {
+//         console.warn(`[MongoSanitize] Potentially dangerous input detected: ${key}`);
+//     }
+// }));
+
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
       res.locals.currentUser = req.user
@@ -85,6 +101,7 @@ app.use((req, res, next) => {
       res.locals.error = req.flash('error')
       next();
 })
+
 
 //Routes
 app.use('/', userRouter);

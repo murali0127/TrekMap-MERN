@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
 const { Schema } = mongoose;
-const User = require('./user')
+const User = require('./user');
+const { trekSchema } = require('../validateSchema');
 
 const trekkingSchema = new Schema({
       name: {
@@ -60,5 +61,5 @@ trekkingSchema.post('findOneAndDelete', async function (document) {
       }
 });
 Trekking = mongoose.model('Trekking', trekkingSchema);
-module.exports = Trekking;
+module.exports = { Trekking, trekSchema };
 

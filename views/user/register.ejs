@@ -4,12 +4,12 @@
             <div class="row justify-content-center">
                   <div class="col-lg-8">
                         <div class="card shadow-sm">
-                              <div class="card-header bg-danger">
-                                    <h3 class="mb-0 text-white">
+                              <div class="card-header bg-primary" id="signup-title">
+                                    <h3 class="mb-0 text-dark">
                                           Sign-Up
                                     </h3>
                               </div>
-                              <div class="card-body p-4">
+                              <div class="card-body p-4 ">
                                     <form action="/register" method="post" novalidate class="validated-form">
                                           <div class="row g-3">
                                                 <!-- E-mail -->
@@ -36,7 +36,7 @@
                                                       <label for="password" class="form-label">
                                                             Password <span class="text-danger">*</span>
                                                       </label>
-                                                      <input type="text" id="location" class="form-control"
+                                                      <input type="password" id="location" class="form-control"
                                                             name="user[password]" placeholder="Enter password" required>
                                                       <div class="invalid-feedback">Please enter a password.</div>
                                                 </div>

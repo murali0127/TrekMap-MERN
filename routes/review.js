@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync')
 const ExpressError = require('../utils/ExpressError');
 const { reviewSchema } = require('../validateSchema');
 const { Review } = require('../models/review');
-const Trekking = require('../models/trekking')
+const { Trekking } = require('../models/trekking')
 const flash = require('connect-flash');
 const { isLoggedIn, validateReview, isAuthorize, isReviewAuthorize } = require('../middleware');
 

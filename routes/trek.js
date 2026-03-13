@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const { trekSchema } = require('../validateSchema');
 const falsh = require('connect-flash');
-const Trekking = require('../models/trekking');
+const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
 const { isLoggedIn, isAuthorize, validateTrekking } = require('../middleware')
 
@@ -16,7 +16,7 @@ router.get('/', isLoggedIn, catchAsync(async (req, res) => {
       res.render('trekkings/index', { trekkings });
 }));
 
-router.post('/', validateTrekking, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateTrekking, catchAsync(async (req, res, next) => {
       // console.log(req.body);
       const newTrek = new Trekking(req.body.trekking);
       newTrek.author = req.user._id;
