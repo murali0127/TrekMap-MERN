@@ -31,6 +31,14 @@ const User = require('./models/user');
 //MONGO SANITIZATION (Adding Security)
 const mongooseSanitize = require('express-mongo-sanitize');
 
+//MULTER
+const multer = require('multer');
+
+//.ENV
+if (process.env.NODE_ENV !== 'production') {
+      require('dotenv').config();
+}
+
 const app = express();
 
 //Connect MongoDB

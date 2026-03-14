@@ -1,5 +1,5 @@
 const path = require('path');
-const Trekking = require('../models/trekking');
+const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
 const data = require('./locations')
 //Connect MongoDB
@@ -32,3 +32,5 @@ const seedDB = async () => {
 }
 
 seedDB();
+
+

@@ -21,8 +21,11 @@
                                     <div class="col-md-6 col-lg-4">
                                           <div class="card h-100 trek-card shadow-sm">
                                                 <div class="card-img-wrapper">
-                                                      <img class="card-img-top" src="<%= spot.image %>"
-                                                            alt="<%= spot.name %>">
+                                                      <!-- <% for(let img of spot.image) { %>
+                                                            <img src="<%= img.url %>" alt="<%= img.filename %>">
+                                                            <% } %> -->
+                                                      <img src="<%= spot.image[0].url %>" alt="<%= spot.name %>">
+
                                                       <div class="card-img-overlay d-flex align-items-end">
                                                             <span class="badge bg-primary">
                                                                   <i class="bi bi-geo-alt me-1"></i>

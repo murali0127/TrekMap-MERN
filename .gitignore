@@ -6,3 +6,6 @@ dist
 npm-debug.log
 images
 /*.txt
+models/hotel.js
+models/food.js
+.env

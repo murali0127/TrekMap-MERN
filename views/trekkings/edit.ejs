@@ -4,14 +4,14 @@
             <div class="row justify-content-center">
                   <div class="col-lg-8">
                         <div class="card shadow-sm">
-                              <div class="card-header bg-warning">
-                                    <h3 class="mb-0">
+                              <div class="card-header bg-primary">
+                                    <h3 class="mb-0 text-dark">
                                           <i class="bi bi-pencil me-2"></i>Edit <%= trekking.name %>
                                     </h3>
                               </div>
                               <div class="card-body p-4">
                                     <form action="/treks/<%= trekking._id %>?_method=PUT" method="post" novalidate
-                                          class="validated-form">
+                                          class="validated-form" enctype="multipart/form-data">
                                           <div class="row g-3">
                                                 <!-- Name -->
                                                 <div class="col-md-6">
@@ -47,6 +47,16 @@
 
                                                 <!-- Image URL -->
                                                 <div class="col-md-6">
+                                                      <div class="from-file custom-file">
+
+                                                            <label for="image" class="from-label">Upload Image :</label>
+                                                            <input type="file" name="image"
+                                                                  class="form-control form-control-sm form-file-input"
+                                                                  id="image" multiple />
+                                                      </div>
+                                                </div>
+
+                                                <!-- <div class="col-md-6">
                                                       <label for="image" class="form-label">
                                                             Image URL <span class="text-danger">*</span>
                                                       </label>
@@ -55,7 +65,7 @@
                                                             required>
                                                       <div class="invalid-feedback">Please enter a valid image URL.
                                                       </div>
-                                                </div>
+                                                </div> -->
 
                                                 <!-- Description -->
                                                 <div class="col-12">
@@ -64,11 +74,34 @@
                                                             name="trekking[description]"><%= trekking.description %></textarea>
                                                 </div>
 
+                                                <!-- Current Images with Delete Option -->
+                                                <% if(trekking.image && trekking.image.length > 0) { %>
+                                                <div class="col-12 mt-4">
+                                                      <label class="form-label fw-bold">Current Images (Check to Delete)</label>
+                                                      <div class="row g-2">
+                                                            <% trekking.image.forEach((img, i) => { %>
+                                                            <div class="col-4 col-md-3">
+                                                                  <div class="card">
+                                                                        <img src="<%= img.url %>" class="card-img-top" alt="<%= trekking.name %>" style="height: 100px; object-fit: cover;">
+                                                                        <div class="card-body p-2 text-center">
+                                                                              <div class="form-check">
+                                                                                    <input class="form-check-input" type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>">
+                                                                                    <label class="form-check-label text-danger" for="image-<%= i %>">
+                                                                                          <small>Delete</small>
+                                                                                    </label>
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                            <% }) %>
+                                                      </div>
+                                                </div>
+                                                <% } %>
                                                 <!-- Submit Button -->
                                                 <div class="col-12 mt-4">
                                                       <div class="d-flex gap-2">
-                                                            <button type="submit" class="btn btn-warning btn-lg">
-                                                                  <i class="bi bi-check-circle me-2"></i>Save Changes
+                                                            <button type="submit" class="btn btn-primary btn-lg">
+                                                                  Save Changes
                                                             </button>
                                                             <a href="/treks/<%= trekking._id %>"
                                                                   class="btn btn-outline-secondary btn-lg">

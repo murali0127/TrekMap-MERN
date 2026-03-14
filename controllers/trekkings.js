@@ -1,3 +1,4 @@
+const { cloudinary } = require('../cloudinary');
 const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
 
@@ -12,10 +13,21 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createNewTrek = async (req, res, next) => {
       const newTrek = new Trekking(req.body.trekking);
-      newTrek.author = req.user._id;
-      await newTrek.save();
-      req.flash('success', 'Succesfully created new Trekking.')
-      res.redirect(`/treks/${newTrek._id}`);
+      const imgs = req.files.map(file => ({
+            url: file.path,
+            filename: file.filename
+      }))
+      if (imgs.length <= 5) {
+            newTrek.image = imgs;
+            newTrek.author = req.user._id;
+            await newTrek.save();
+            req.flash('success', 'Succesfully created new Trekking.')
+            return res.redirect(`/treks/${newTrek._id}`);
+
+      } else {
+            req.flash('error', 'Only less than 5 photos are allowded.')
+            return res.redirect(`/treks/new`)
+      }
 
 }
 
@@ -54,8 +66,35 @@ module.exports.getEditForm = async (req, res) => {
 module.exports.editTrekking = async (req, res) => {
       const id = req.params.id;
       const data = await Trekking.findByIdAndUpdate({ _id: id }, { ...req.body.trekking }, { new: true });
-      req.flash('success', 'Updated successfully')
-      res.redirect(`/treks/${id}`)
+      //deleteImages
+      if (req.body.deleteImages) {
+            //DELETE FROM CLOUDINARY STORAGE
+            for (let filename of req.body.deleteImages) {
+                  await cloudinary.uploader.destroy(filename)
+            }
+            //DELETE FROM MONGODB
+            await data.updateOne({ $pull: { image: { filename: { $in: req.body.deleteImages } } } })
+      }
+      const imgs = req.files.map(file => ({
+            url: file.path,
+            filename: file.filename
+      }))
+      const total_length = data.image.length + imgs.length;
+      if (total_length <= 10) {
+
+            data.image.push(...imgs);
+            await data.save();
+            req.flash('success', 'Updated successfully')
+            return res.redirect(`/treks/${id}`)
+      } else {
+            //remove from cloud storage
+            for (let img of imgs) {
+                  await cloudinary.uploader.destroy(img.filename);
+            }
+            req.flash('error', 'Images should be lesser than or equal to 5');
+            return res.redirect(`/treks/${id}/edit`);
+      }
+
 }
 
 module.exports.deleteTrek = async (req, res) => {

@@ -1,9 +1,21 @@
 const mongoose = require('mongoose');
-const Review = require('./review');
+const { Review } = require('./review');
 const { Schema } = mongoose;
 const User = require('./user');
 const { trekSchema } = require('../validateSchema');
+const { required } = require('joi');
 
+
+const ImageSchema = new Schema({
+      url: {
+            type: String,
+            required: true,
+      },
+      filename: {
+            type: String,
+            required: true
+      }
+})
 const trekkingSchema = new Schema({
       name: {
             type: String,
@@ -28,9 +40,7 @@ const trekkingSchema = new Schema({
                   // required: true
             }
       },
-      image: {
-            type: String,
-      },
+      image: [ImageSchema],
       description: {
             type: String,
             // required : true

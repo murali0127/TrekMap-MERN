@@ -17,9 +17,29 @@
                   <!-- Trek Details -->
                   <div class="col-lg-7">
                         <div class="card shadow-sm">
-                              <div class="card-img-wrapper-large">
-                                    <img src="<%= data.image %>" class="card-img-top" alt="<%= data.name %>">
-                              </div>
+                              <% if(data.image && data.image.length > 0) { %>
+                                    <div id="trekCarousel" class="carousel slide" data-bs-ride="carousel">
+                                          <div class="carousel-inner">
+                                                <% data.image.forEach((img, i) => { %>
+                                                      <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                                            <img src="<%= img.url %>" class="d-block w-100" alt="<%= data.name %>" style="height: 400px; object-fit: cover;">
+                                                      </div>
+                                                <% }) %>
+                                          </div>
+                                          <% if(data.image.length > 1) { %>
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#trekCarousel" data-bs-slide="prev">
+                                                      <span class="carousel-control-prev-icon"></span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#trekCarousel" data-bs-slide="next">
+                                                      <span class="carousel-control-next-icon"></span>
+                                                </button>
+                                          <% } %>
+                                    </div>
+                              <% } else { %>
+                                    <div class="card-img-wrapper-large">
+                                          <img src="https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg" alt="No image available">
+                                    </div>
+                              <% } %>
                               <div class="card-body">
                                     <h1 class="card-title display-5 fw-bold">
                                           <%= data.name %>

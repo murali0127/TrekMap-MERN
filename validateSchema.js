@@ -34,9 +34,16 @@ module.exports.trekSchema = Joi.object({
             name: Joi.string().pattern(/^[A-Za-z\s]+$/).required().escapeHTML(),
             location: Joi.string().pattern(/^[A-Za-z\s]+$/).required(),
             district: Joi.string().pattern(/^[A-Za-z\s]+$/).required().escapeHTML(),
-            image: Joi.string().required(),
+            image: Joi.array().items(
+                  Joi.object({
+                        url: Joi.string().required(),
+                        filename: Joi.string()
+                  }).optional()),
             description: Joi.string().required()
-      }).required()
+      }).required(),
+      deleteImages: Joi.array().items(
+            Joi.string()
+      ).optional()
 })
 
 

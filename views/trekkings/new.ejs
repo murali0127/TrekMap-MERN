@@ -4,13 +4,14 @@
             <div class="row justify-content-center">
                   <div class="col-lg-8">
                         <div class="card shadow-sm">
-                              <div class="card-header bg-info">
+                              <div class="card-header bg-primary">
                                     <h3 class="mb-0 text-dark">
-                                          <i class="bi bi-plus-circle me-2"></i>Add New Trekking Spot
+                                          Add New Trekking Spot
                                     </h3>
                               </div>
                               <div class="card-body p-4">
-                                    <form action="/treks" method="post" novalidate class="validated-form">
+                                    <form action="/treks" method="post" novalidate class="validated-form"
+                                          enctype="multipart/form-data">
                                           <div class="row g-3">
                                                 <!-- Name -->
                                                 <div class="col-md-6">
@@ -47,6 +48,15 @@
 
                                                 <!-- Image URL -->
                                                 <div class="col-md-6">
+                                                      <div class="from-file custom-file">
+
+                                                            <label for="image" class="from-label">Upload Image :</label>
+                                                            <input type="file" name="image"
+                                                                  class="form-control form-control-sm form-file-input"
+                                                                  id="image" multiple />
+                                                      </div>
+                                                </div>
+                                                <!-- <div class="col-md-6">
                                                       <label for="image" class="form-label">
                                                             Image URL <span class="text-danger">*</span>
                                                       </label>
@@ -55,7 +65,7 @@
                                                             placeholder="https://example.com/image.jpg" required>
                                                       <div class="invalid-feedback">Please enter a valid image URL.
                                                       </div>
-                                                </div>
+                                                </div> -->
 
                                                 <!-- Description -->
                                                 <div class="col-12">

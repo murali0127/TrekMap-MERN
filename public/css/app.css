@@ -924,6 +924,12 @@ body.theme-light .navbar .nav-link:hover {
     color: #fff !important;
 }
 
+body.theme-light .hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next {
+    background: rgba(22, 133, 127, 0.6);
+    box-shadow: var(--shadow-glow);
+}
+
 body.theme-light .trek-card,
 body.theme-light .card,
 body.theme-light .review-card {
@@ -932,9 +938,8 @@ body.theme-light .review-card {
     color: var(--text-secondary);
 }
 
-body.theme-light.feature-card {
-    /* background: rgba(0, 70, 67, 0.05) */
-    background: var(--primary-light);
+body.theme-light .feature-card {
+    background: rgba(0, 70, 67, 0.05)
 }
 
 body.theme-light .info-box {
