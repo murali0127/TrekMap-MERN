@@ -15,7 +15,6 @@ const storeReturnTo = (req, res, next) => {
 
 //CHECK LOGGERIN USER MIDDLEWARE
 const isLoggedIn = (req, res, next) => {
-      console.log('REQ USER...', req.user)
       if (!req.isAuthenticated()) {
             //Store thr url user requesting
             req.session.returnTo = req.originalUrl

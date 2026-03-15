@@ -13,6 +13,8 @@ module.exports.forwardGeocode = async function (location, district) {
 
       }
       catch (err) {
+            flash('error', 'Note able to fetch GeoCordinates');
+            return res.redirect(`/treks`);
 
       }
 

@@ -236,7 +236,9 @@
                                                                         </p>
                                                                         <% if(review.author){ %>
                                                                               <p class="mb-0 mt-2 text-secondary">By -
-                                                                                    <%= review.author.username %>
+                                                                                    <%= review.author.username ?
+                                                                                          review.author.username :
+                                                                                          review.author.displayName%>
                                                                               </p>
                                                                               <% } %>
                                                                   </div>

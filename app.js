@@ -11,6 +11,11 @@ const ExpressError = require('./utils/ExpressError');
 //VALIDATE SCHEMA MODULE
 const { reviewSchema } = require('./validateSchema')
 const Review = require('./models/review');
+
+//.ENV
+if (process.env.NODE_ENV !== 'production') {
+      require('dotenv').config();
+}
 //ROUTER
 const userRouter = require('./routes/user');
 const trekRouter = require('./routes/trek');
@@ -33,11 +38,6 @@ const mongooseSanitize = require('express-mongo-sanitize');
 
 //MULTER
 const multer = require('multer');
-
-//.ENV
-if (process.env.NODE_ENV !== 'production') {
-      require('dotenv').config();
-}
 
 const app = express();
 
@@ -91,8 +91,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStratergy(User.authenticate()));
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
 
 // Sanitization - MongoDB Injection Prevention
 // app.use(mongooseSanitize({
@@ -104,7 +103,7 @@ passport.deserializeUser(User.deserializeUser());
 
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
-      res.locals.currentUser = req.user
+      res.locals.currentUser = req.user || null;
       res.locals.success = req.flash('success');
       res.locals.error = req.flash('error')
       next();

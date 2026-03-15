@@ -50,7 +50,7 @@ async function initTrekMap() {
             });
 
             // Add navigation controls
-            map.addControl(new maptilersdk.NavigationControl(), 'top-right');
+            mapInstance.addControl(new maptilersdk.NavigationControl(), 'top-right');
 
             // Add marker with popup
             new maptilersdk.Marker({ color: '#1d610e' })
@@ -59,7 +59,7 @@ async function initTrekMap() {
                         new maptilersdk.Popup({ offset: 25 })
                               .setHTML(`<strong>${trekName}</strong>`)
                   )
-                  .addTo(map);
+                  .addTo(mapInstance);
 
       } catch (error) {
             console.error('Error initializing map:', error);
@@ -72,8 +72,6 @@ async function initTrekMap() {
       //             }
       //             mapInstance.setStyle(MAP_STYLES[theme]);
       //       }
-      // }
-
-      // Initialize map 
-      document.addEventListener('DOMContentLoaded', initTrekMap);
 }
+
+document.addEventListener('DOMContentLoaded', initTrekMap);

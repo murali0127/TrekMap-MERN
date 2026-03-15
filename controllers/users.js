@@ -30,8 +30,9 @@ module.exports.renderLoginForm = (req, res) => {
 }
 
 module.exports.loginUser = (req, res) => {
-      // console.log(storeReturnTo);
-      req.flash('success', `Welcome back ${req.user.username}`);
+      console.log('Current User:', req.user);
+      const name = req.user.username || req.user.displayName || 'User';
+      req.flash('success', `Welcome back ${name}`);
       const redirectUrl = res.locals.returnTo || '/treks';
       delete req.session.returnTo;
       res.redirect(redirectUrl);
@@ -46,3 +47,4 @@ module.exports.logoutUser = (req, res) => {
       req.flash('success', 'Logged out successfully.');
       res.redirect('/');
 }
+
