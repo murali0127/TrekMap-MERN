@@ -1,7 +1,8 @@
 const { cloudinary } = require('../cloudinary');
 const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
-
+const { forwardGeocode } = require('../utils/geocode')
+const maptilerClient = require('@maptiler/client')
 
 module.exports.index = async (req, res, next) => {
       const trekkings = await Trekking.find({});
@@ -18,6 +19,11 @@ module.exports.createNewTrek = async (req, res, next) => {
             filename: file.filename
       }))
       if (imgs.length <= 5) {
+
+            //Add Coordinates to DB
+            const geocode = await forwardGeocode(newTrek.location, newTrek.district);
+            newTrek.coordinates.type = "Point";
+            newTrek.coordinates.coordinates = geocode;
             newTrek.image = imgs;
             newTrek.author = req.user._id;
             await newTrek.save();
@@ -43,7 +49,8 @@ module.exports.showTrekking = async (req, res, next) => {
                   path: 'author'
             }
       });
-      console.log(data)
+      const geocode = await forwardGeocode(data.location, data.district)
+      console.log(`GeoCode : ${geocode}`);
       if (data === null) {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks')

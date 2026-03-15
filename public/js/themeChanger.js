@@ -1,7 +1,8 @@
 /**
  * Theme Changer - Dark/Light Mode Toggle
- * Persists choice in localStorage
  */
+
+// const { typeOf } = require("@maptiler/sdk");
 
 (function () {
     const storageKey = 'trekmap-theme';
@@ -18,6 +19,9 @@
         document.body.classList.remove('theme-dark', 'theme-light');
         document.body.classList.add(`theme-${themeName}`);
 
+        // Toggle Bootstrap's built-in dark/light mode
+        document.body.setAttribute('data-bs-theme', themeName);
+
         // Update button icon
         const themeBtn = document.getElementById('themeToggle');
         if (themeBtn) {
@@ -26,6 +30,7 @@
                 icon.className = themeName === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
             }
         }
+        // if (typeof updateMapStyle === 'function' updateMapStyle(newTheme))
     }
 
     // Toggle theme
@@ -34,6 +39,8 @@
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         localStorage.setItem(storageKey, newTheme);
         applyTheme(newTheme);
+
+
     }
 
     // Initialize on page load
@@ -51,7 +58,6 @@
         }
     });
 
-    // Also initialize immediately if DOM is already loaded
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         initTheme();
     }

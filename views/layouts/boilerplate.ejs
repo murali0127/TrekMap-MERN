@@ -11,6 +11,9 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
       <!-- Custom CSS -->
       <link rel="stylesheet" href="/css/app.css">
+      <!-- MapTiler -->
+      <link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" />
+
 </head>
 
 <body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
@@ -28,6 +31,10 @@
                         <script src="/js/bootstrap.bundle.min.js"></script>
                         <script src="/js/validateForm.js"></script>
                         <script src="/js/themeChanger.js"></script>
+                        <!-- MapTiler SDK must load BEFORE showMap.js -->
+                        <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.min.js"></script>
+                        <script src="/js/showMap.js"></script>
+
 </body>
 
 </html>
