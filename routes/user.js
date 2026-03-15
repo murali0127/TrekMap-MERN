@@ -35,7 +35,18 @@ router.get('/oauth/google/callback', passport.authenticate('google', {
 });
 
 
+//github OAuth 
+router.get('/oauth/github/login', passport.authenticate('github', {
+      scope: ['profile', 'email']
+}));
 
+router.get('/oauth/github/callback', passport.authenticate('github', {
+      failureFlash: true,
+      failureRedirect: '/login'
+}), (req, res) => {
+      req.flash('success', `Welcom back, ${req.user.username || req.user.displayName}`);
+      res.redirect('/treks');
+})
 
 
 
