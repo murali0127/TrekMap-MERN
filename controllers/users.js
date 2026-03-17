@@ -48,3 +48,12 @@ module.exports.logoutUser = (req, res) => {
       res.redirect('/');
 }
 
+module.exports.showProfile = async (req, res) => {
+      const user = await User.findById(req.params.id)
+            .populate('treks');
+
+      res.render('user/profile', { user })
+
+
+};
+

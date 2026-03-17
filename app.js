@@ -114,6 +114,7 @@ app.use((req, res, next) => {
 app.use('/', userRouter);
 app.use('/treks', trekRouter);
 app.use('/treks/:id/review', reviewRouter);
+app.use('/user', userRouter)
 
 
 app.get('/', (req, res) => {

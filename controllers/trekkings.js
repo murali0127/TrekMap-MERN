@@ -3,10 +3,14 @@ const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
 const { forwardGeocode } = require('../utils/geocode')
 const maptilerClient = require('@maptiler/client')
+if (!process.env.NODE_ENV === 'production') {
+      require('dotenv').config();
+}
 
 module.exports.index = async (req, res, next) => {
-      const trekkings = await Trekking.find({});
-      res.render('trekkings/index', { trekkings });
+      const trekkings = await Trekking.find({}).lean();
+      const maptilerKey = process.env.MAPTILER_KEY
+      res.render('trekkings/index', { trekkings, maptilerKey });
 };
 module.exports.renderNewForm = (req, res) => {
       res.render('trekkings/new')
@@ -19,7 +23,6 @@ module.exports.createNewTrek = async (req, res, next) => {
             filename: file.filename
       }))
       if (imgs.length <= 5) {
-
             //Add Coordinates to DB
             const geocode = await forwardGeocode(newTrek.location, newTrek.district);
             newTrek.coordinates.type = "Point";
@@ -50,7 +53,7 @@ module.exports.showTrekking = async (req, res, next) => {
             }
       });
       const geocode = await forwardGeocode(data.location, data.district)
-      console.log(`GeoCode : ${geocode}`);
+      // console.log(`GeoCode : ${geocode}`);
       if (data === null) {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks')

@@ -8,7 +8,12 @@ module.exports = [
             image: [{
                   url: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/3d/3d/ce/doddabetta-peak.jpg?w=600&h=400&s=1',
                   filename: 'seed/doddabetta-peak'
+            }, {
+
+                  url: 'https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcRsPdu2lwNMj3yvudkNCT9S91uH7fCEMg_bUTsA107MWtgEFecVkTaNc6ilP7PpYSDHTUNVmG3qoFk_13CUALOLChg&s=19]',
+                  filename: 'seed/doddabetta-peak'
             }],
+
             difficulty: "Moderate",
             permit: "NotRequired"
       },

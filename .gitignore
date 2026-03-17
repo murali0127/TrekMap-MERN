@@ -9,3 +9,4 @@ images
 models/hotel.js
 models/food.js
 .env
+/*.md

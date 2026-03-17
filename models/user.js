@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const Trekking = require('./trekking');
 const plm = require('passport-local-mongoose');
 const passportLocalMongoose = plm.default || plm;
 
@@ -13,6 +14,10 @@ const userSchema = new Schema({
       username: {
             type: String,
             required: false
+      },
+      treks: {
+            type: Schema.Types.ObjectId,
+            ref: 'Trekking'
       },
       role: {
             type: String,

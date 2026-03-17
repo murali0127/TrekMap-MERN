@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const passport = require('../config/passport');
 const { storeReturnTo } = require('../middleware');
 const user = require('../controllers/users');
-const { googleLogin } = require('../controllers/users')
+const { googleLogin, showProfile } = require('../controllers/users')
 
 
 router.route('/register')
@@ -48,6 +48,8 @@ router.get('/oauth/github/callback', passport.authenticate('github', {
       res.redirect('/treks');
 })
 
+//USER PROFILE
+router.get('/profile', showProfile);
 
 
 router.get('/logout', user.logoutUser);

@@ -54,7 +54,14 @@
                                                       </p>
                                                       <% if(data.author){ %>
                                                             <p class="card-text lead text-secondary">
-                                                                  Sumbitted by -<%= data.author.username %>
+                                                                  Created by -
+                                                                  <a href="/user/<%= data.author._id %>">
+                                                                        <img src="<%= data.author.avatar %>"
+                                                                              alt="<%= data.author.displayName %>"
+                                                                              class="rounded-circle" width="30" />
+                                                                        <%= data.author.username ||
+                                                                              data.author.displayName %>
+                                                                  </a>
                                                             </p>
                                                             <% } %>
 
