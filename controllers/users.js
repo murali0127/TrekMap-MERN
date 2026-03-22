@@ -5,7 +5,7 @@ module.exports.renderRegisterForm = (req, res) => {
       res.render('user/register')
 };
 
-module.exports.registerUser = async (req, res) => {
+module.exports.registerUser = async (req, res, next) => {
       try {
 
             const { email, username, password } = req.body.user;
@@ -49,11 +49,33 @@ module.exports.logoutUser = (req, res) => {
 }
 
 module.exports.showProfile = async (req, res) => {
-      const user = await User.findById(req.params.id)
+      const user = await User.findById(req.user._id)
             .populate('treks');
+      if (!user) {
+            req.flash('error', 'User not found.')
+            res.redirect(`/treks`)
+      }
 
       res.render('user/profile', { user })
 
 
 };
+
+module.exports.renderEditProfile = async (req, res) => {
+      const user = await User.findById(req.user.id)
+      res.render('user/editProfile', { user });
+}
+
+module.exports.editUserProfile = async (req, res) => {
+      const id = req.params.id;
+      const user = await User.findByIdAndUpdate({ id: id }, { ...req.body.user }, { new: true });
+
+      if (!user) {
+            req.flash('error', 'User not found!');
+            res.redirect('/user/profile');
+      }
+      req.flash('success', 'Done! Updated Successfully.')
+      res.redirect('/user/profile')
+
+}
 

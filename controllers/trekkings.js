@@ -3,14 +3,32 @@ const { Trekking } = require('../models/trekking');
 const mongoose = require('mongoose');
 const { forwardGeocode } = require('../utils/geocode')
 const maptilerClient = require('@maptiler/client')
+const { getPaginationParams, getPaginationLinks, getPaginationMetadata } = require('../utils/pagination')
 if (!process.env.NODE_ENV === 'production') {
       require('dotenv').config();
 }
 
 module.exports.index = async (req, res, next) => {
-      const trekkings = await Trekking.find({}).lean();
+
+      //Pagination
+      const page = parseInt(req.query.page);
+      const limit = parseInt(req.query.limit);
+      //get Pagination Parameter
+      const { skip, limit: pageLimit, page: currentPage } = getPaginationParams(page, limit);
+
+      const trekkings = await Trekking.find({})
+            .skip(skip)
+            .limit(pageLimit)
+            .sort({ _id: -1 })  //Ascending order -> Newest First
+            .lean();   // .lean() -> Returns Plain Javascript Object instead of Mongo Document while performing a query
+
+      //Pagination metadata
+      const totalTreks = await Trekking.countDocuments();
+
+      const pagination = getPaginationMetadata(totalTreks, currentPage, pageLimit);
+
       const maptilerKey = process.env.MAPTILER_KEY
-      res.render('trekkings/index', { trekkings, maptilerKey });
+      res.render('trekkings/index', { trekkings, maptilerKey, pagination });
 };
 module.exports.renderNewForm = (req, res) => {
       res.render('trekkings/new')
@@ -46,6 +64,8 @@ module.exports.showTrekking = async (req, res, next) => {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks');
       }
+
+
       const data = await Trekking.findById(id).populate('reviews').populate('author').populate({
             path: 'reviews',
             populate: {
@@ -58,6 +78,7 @@ module.exports.showTrekking = async (req, res, next) => {
             req.flash('error', 'Trekking not found!');
             return res.redirect('/treks')
       }
+
 
       res.render('trekkings/show', { data });
 

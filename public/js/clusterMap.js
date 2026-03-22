@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!mapContainer) return;
 
       const apiKey = mapContainer.dataset.maptilerKey;
-      const treks = JSON.parse(mapContainer.dataset.treks); //JSON parse -> converys JSON into Object.
+      const treks = JSON.parse(mapContainer.dataset.treks); //JSON parse -> converts JSON into Object.
       // const treks = mapContainer.dataset.treks;
       const geoJSON = {
             type: 'FeatureCollection',

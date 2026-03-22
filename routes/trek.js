@@ -12,6 +12,7 @@ const multer = require('multer');
 const { storage } = require('../cloudinary/index')
 const upload = multer({ storage })
 
+
 //Controllers
 const trekking = require('../controllers/trekkings');
 

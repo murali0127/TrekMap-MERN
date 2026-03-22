@@ -12,6 +12,8 @@
                               <div class="card-body p-4">
                                     <form action="/treks" method="post" novalidate class="validated-form"
                                           enctype="multipart/form-data">
+                                          <!-- CSRF-->
+
                                           <div class="row g-3">
                                                 <!-- Name -->
                                                 <div class="col-md-6">
@@ -50,7 +52,8 @@
                                                 <div class="col-md-6">
                                                       <div class="from-file custom-file">
 
-                                                            <label for="image" class="from-label">Upload Image :</label>
+                                                            <label for="image" class="from-label">Upload Image
+                                                                  :</label>
                                                             <input type="file" name="image"
                                                                   class="form-control form-control-sm form-file-input"
                                                                   id="image" multiple />

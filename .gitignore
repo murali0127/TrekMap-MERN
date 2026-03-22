@@ -10,3 +10,8 @@ models/hotel.js
 models/food.js
 .env
 /*.md
+seeds/hotels.js
+seeds/foods.js
+docs
+csrf.ejs
+

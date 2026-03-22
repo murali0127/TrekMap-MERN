@@ -98,12 +98,13 @@
                                                                               </a>
                                                                               <form action="/treks/<%= data._id %>?_method=DELETE"
                                                                                     method="post" class="d-inline">
-                                                                                    <button type="submit"
-                                                                                          class="btn btn-outline-danger"
-                                                                                          onclick="return confirm('Are you sure you want to delete this trek?')">
-                                                                                          <i
-                                                                                                class="bi bi-trash me-2"></i>Delete
-                                                                                    </button>
+                                                                                    <%- include('../partials/csrf') %>
+                                                                                          <button type="submit"
+                                                                                                class="btn btn-outline-danger"
+                                                                                                onclick="return confirm('Are you sure you want to delete this trek?')">
+                                                                                                <i
+                                                                                                      class="bi bi-trash me-2"></i>Delete
+                                                                                          </button>
                                                                               </form>
                                                                         </div>
                                                                         <% } %>
@@ -151,6 +152,7 @@
                                           <h6 class="mb-3">Leave a Review</h6>
                                           <form action="/treks/<%= data._id %>/review" method="post" novalidate
                                                 class="validated-form">
+
                                                 <div class="mb-3">
                                                       <label class="form-label">Rating</label>
                                                       <div class="rating-input">

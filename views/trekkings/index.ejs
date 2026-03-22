@@ -1,7 +1,5 @@
 <% layout('layouts/boilerplate') %>
-      <div id="map"
-            data-maptiler-key="<%= maptilerKey %>"
-            data-treks='<%= JSON.stringify(trekkings) %>'
+      <div id="map" data-maptiler-key="<%= maptilerKey %>" data-treks='<%= JSON.stringify(trekkings) %>'
             style="width: 100%; height: 400px;">
 
       </div>
@@ -68,5 +66,7 @@
                                     </div>
                                     <% } %>
                         </div>
-                        <% } %>
+                        <%- include('../partials/pagination', { pagination, baseUrl: '/treks' }) %>
+
+                              <% } %>
       </div>

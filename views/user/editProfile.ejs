@@ -1,0 +1,57 @@
+<%- layout('layouts/boilerplate') %>
+      <div class="container mt-5">
+            <div class="card">
+                  <div class="card-body p-4">
+                        <form action="/user/profile/<%= user._id %>?_method=PUT" method="post" novalidate
+                              class="validated-form" enctype="multipart/form-data">
+
+                              <div class="row g-3">
+                                    <!-- Name -->
+                                    <div class="col-md-6">
+                                          <label for="name" class="form-label">
+                                                User name <span class="text-danger">*</span>
+                                          </label>
+                                          <input type="text" id="name" class="form-control" name="user[username]"
+                                                value="<%= user.username || user.displayName %>" required>
+                                          <div class="invalid-feedback">Please enter a name.</div>
+                                    </div>
+
+                                    <!-- Avatar Image -->
+                                    <div class="col-md-6">
+                                          <div class="from-file custom-file">
+                                                <label for="image" class="from-label">Upload Image :</label>
+                                                <input type="file" name="image"
+                                                      class="form-control form-control-gl form-file-input mt-2"
+                                                      id="image" multiple />
+                                          </div>
+                                    </div>
+
+                                    <!-- About Section -->
+
+                                    <div class="col-12">
+                                          <label for="bio" class="form-label">About</label>
+                                          <textarea id="bio" class="form-control" rows="4" name="user[about]"
+                                                placeholder="Let others know about you." style="width:50%"></textarea>
+                                    </div>
+
+
+                                    <!-- Submit Button -->
+                                    <div class="col-12 mt-4">
+                                          <div class="d-flex gap-2">
+                                                <button type="submit" class="btn btn-primary btn-lg">
+                                                      Save Changes
+                                                </button>
+                                                <!-- populate user before passing in the edit form .-->
+                                                <% if(user.treks) { %>
+                                                      <a href="/treks/" class="btn btn-outline-secondary btn-lg">
+                                                            Cancel
+                                                      </a>
+                                                      <% } %>
+                                          </div>
+                                    </div>
+                              </div>
+                        </form>
+                  </div>
+
+            </div>
+      </div>

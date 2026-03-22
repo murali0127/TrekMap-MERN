@@ -1,25 +1,33 @@
 <%- layout('layouts/boilerplate') %>
 
       <!-- Profile header -->
-      <div class="profile-header">
-            <% if(user.avatar) { %>
+      <div class="card">
 
-                  <img src="<%= user.avatar %>" alt="Avatar">
-                  <% } %>
-                        <h3>
-                              <%= user.displayName || user.username%>
-                        </h3>
-                        <p class="text-muted">@<%= user.username %>
-                        </p>
-                        <span class="badge bg-<%= user.role === 'admin' ? 'danger' : 'primary' %>">
-                              <%= user.role %>
-                        </span>
+            <div class="profile-header card-header">
+                  <% if(user.avatar) { %>
+                        <img src="<%= user.avatar %>" referrerpolicy="no-referrer" class="rounded-circle"
+                              style="height:50px;width:50px" alt="<%= user.username %>" />
+                        <% } %>
+                              <span>
+
+                                    <h3>
+                                          <%= user.displayName || user.username%>
+                                    </h3>
+                              </span>
+                              <p class="text-muted">@ <%= user.username || user.displayName %>
+                              </p>
+                              <span class="badge text-<%= user.role === 'admin' ? 'danger' : 'muted' %>">
+                                    <%= user.role %>
+                              </span>
+                              <a href="/user/profile/<%= user._id%>/edit" class="btn btn-primary">Edit</a>
+            </div>
       </div>
 
       <!-- About user-->
       <div class="stat-section">
             <div class="stat-card">
-                  <h3></h3>
+                  <h3>About User.....</h3>
+                  <p>Fucking Moron.</p>
             </div>
             <div class="stat-card">
                   <h3></h3>

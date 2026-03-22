@@ -15,10 +15,10 @@ const userSchema = new Schema({
             type: String,
             required: false
       },
-      treks: {
+      treks: [{
             type: Schema.Types.ObjectId,
             ref: 'Trekking'
-      },
+      }],
       role: {
             type: String,
             enum: ['admin', 'user'],

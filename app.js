@@ -5,9 +5,12 @@ const Trekking = require('./models/trekking')
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+
+
 //ERROR CLASS
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
+
 //VALIDATE SCHEMA MODULE
 const { reviewSchema } = require('./validateSchema')
 const Review = require('./models/review');
@@ -16,14 +19,20 @@ const Review = require('./models/review');
 if (process.env.NODE_ENV !== 'production') {
       require('dotenv').config();
 }
+
+
+//CSRF
+// const { doubleCsrf } = require('csrf-csrf');
+// const cookieParser = require('cookie-parser');
+
+
 //ROUTER
 const userRouter = require('./routes/user');
 const trekRouter = require('./routes/trek');
 const reviewRouter = require('./routes/review')
 
 //AUTHENTICATION
-const passport = require('passport');
-const LocalStratergy = require('passport-local');
+const passport = require('./config/passport');
 
 //SESSION
 const session = require('express-session');
@@ -59,8 +68,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+
+//BODY Parser middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//CSRF PROTECTION
+// app.use(cookieParser(process.env.COOKIE_SECRET))
 
 
 
@@ -68,8 +82,10 @@ app.use(express.json());
 //Method-Override
 app.use(methodOverride('_method'));
 
-//Configure Session
 
+
+
+//Configure Session
 const sessionConfiguration = {
       name: 'session',
       secret: 'thisismysecretkey',
@@ -84,13 +100,26 @@ const sessionConfiguration = {
 }
 app.use(session(sessionConfiguration));
 
-app.use(flash());
-
 //CONFIGURING AUTHENTICATION
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStratergy(User.authenticate()));
 
+
+app.use(flash());
+
+// const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf({
+//       getSecret: () => process.env.CSRF_SECRET || 'dev-secret-change-in-production',
+//       cookieName: 'x-csrf-cookie',
+//       size: 64,
+//       ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
+//       getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token'],
+//       getSessionIdentifier: (req) => req.session.id
+// })
+
+
+
+// Apply CSRF protection - must come BEFORE routes
+// app.use(doubleCsrfProtection);
 
 
 // Sanitization - MongoDB Injection Prevention
@@ -106,31 +135,36 @@ app.use((req, res, next) => {
       res.locals.currentUser = req.user || null;
       res.locals.success = req.flash('success');
       res.locals.error = req.flash('error')
+      //CSRF  MIDDLEWARE - Make token available to views
+      // res.locals.csrfToken = generateCsrfToken(req, res)
       next();
 })
+
 
 
 //Routes
 app.use('/', userRouter);
 app.use('/treks', trekRouter);
 app.use('/treks/:id/review', reviewRouter);
-app.use('/user', userRouter)
+app.use('/user/profile', userRouter) //To get proifle info/ User profile Column.
 
 
 app.get('/', (req, res) => {
       res.render('home');
 })
 
-app.get('/fakeUser', async (req, res) => {
-      const user = new User({ email: 'smurali@gmail.com', username: 'Murali' });
-      const newUser = await User.register(user, 'murali@2005');
-      res.send(newUser)
 
-})
 
 //ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
-      console.log(err)
+      console.log(err);
+
+      // // Handle CSRF token errors
+      // if (err.code === 'EBADCSRFTOKEN') {
+      //       req.flash('error', 'Session expired or invalid request. Please try again.');
+      //       return res.redirect('back');
+      // }
+
       const { statusCode = 500, message = 'SOMETHING WENT WRONG' } = err;
       res.status(statusCode).render('error', { err })
 })

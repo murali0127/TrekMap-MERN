@@ -1,0 +1,59 @@
+<% if(pagination && pagination.totalPages> 1) { %>
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+
+            <!-- First Page Button -->
+            <li class="page-item <%= pagination.currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= baseUrl %>?page=1" aria-label="First page">
+                    <i class="bi bi-chevron-double-left"></i>
+                </a>
+            </li>
+
+            <!-- Previous Page Button -->
+            <li class="page-item <%= !pagination.hasPrev ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= pagination.hasPrev ? baseUrl + '?page=' + pagination.prevPage : '#' %>"
+                    aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            <% let startPage=Math.max(1, pagination.currentPage - 2); let endPage=Math.min(pagination.totalPages,
+                startPage + 4); if (endPage - startPage < 4) { startPage=Math.max(1, endPage - 4); } %>
+
+                <% for (let i=startPage; i <=endPage; i++) { %>
+                    <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="<%= baseUrl %>?page=<%= i %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+
+                        <!-- Next Page Button -->
+                        <li class="page-item <%= !pagination.hasNext ? 'disabled' : '' %>">
+                            <a class="page-link"
+                                href="<%= pagination.hasNext ? baseUrl + '?page=' + pagination.nextPage : '#' %>"
+                                aria-label="Next">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+
+                        <!-- Last Page Button -->
+                        <li class="page-item <%= pagination.currentPage === pagination.totalPages ? 'disabled' : '' %>">
+                            <a class="page-link" href="<%= baseUrl %>?page=<%= pagination.totalPages %>"
+                                aria-label="Last page">
+                                <i class="bi bi-chevron-double-right"></i>
+                            </a>
+                        </li>
+        </ul>
+
+        <!-- Item Count Display -->
+        <p class="text-center text-muted mt-2 mb-0">
+            <% if (pagination.totalItems> 0) { %>
+                Showing <%= pagination.startItem %> - <%= pagination.endItem %> of <%= pagination.totalItems %> items
+                            <% } else { %>
+                                No items found
+                                <% } %>
+        </p>
+    </nav>
+    <% } %>
