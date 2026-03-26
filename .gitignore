@@ -7,11 +7,11 @@ npm-debug.log
 images
 /*.txt
 models/hotel.js
-models/food.js
+seeds/hotels.js
 .env
 /*.md
-seeds/hotels.js
-seeds/foods.js
 docs
 csrf.ejs
 
+cache.js
+redis.js

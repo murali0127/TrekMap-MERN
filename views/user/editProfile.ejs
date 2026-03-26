@@ -1,57 +1,535 @@
 <%- layout('layouts/boilerplate') %>
-      <div class="container mt-5">
-            <div class="card">
-                  <div class="card-body p-4">
-                        <form action="/user/profile/<%= user._id %>?_method=PUT" method="post" novalidate
-                              class="validated-form" enctype="multipart/form-data">
 
-                              <div class="row g-3">
-                                    <!-- Name -->
-                                    <div class="col-md-6">
-                                          <label for="name" class="form-label">
-                                                User name <span class="text-danger">*</span>
-                                          </label>
-                                          <input type="text" id="name" class="form-control" name="user[username]"
-                                                value="<%= user.username || user.displayName %>" required>
-                                          <div class="invalid-feedback">Please enter a name.</div>
-                                    </div>
+      <style>
+            :root {
+                  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  --primary-color: #667eea;
+                  --primary-hover: #5a6fd6;
+                  --secondary-color: #764ba2;
+            }
 
-                                    <!-- Avatar Image -->
-                                    <div class="col-md-6">
-                                          <div class="from-file custom-file">
-                                                <label for="image" class="from-label">Upload Image :</label>
-                                                <input type="file" name="image"
-                                                      class="form-control form-control-gl form-file-input mt-2"
-                                                      id="image" multiple />
+            [data-bs-theme="light"] {
+                  --bg-card: #ffffff;
+                  --bg-section: #f8f9fa;
+                  --text-primary: #212529;
+                  --text-secondary: #6c757d;
+                  --border-color: #dee2e6;
+                  --input-bg: #ffffff;
+                  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+                  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+                  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            }
+
+            [data-bs-theme="dark"] {
+                  --bg-card: #2b2b2b;
+                  --bg-section: #1f1f1f;
+                  --text-primary: #f8f9fa;
+                  --text-secondary: #adb5bd;
+                  --border-color: #444444;
+                  --input-bg: #3c3c3c;
+                  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+                  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+                  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+            }
+
+            .edit-profile-container {
+                  max-width: 800px;
+                  margin: 2rem auto;
+            }
+
+            .profile-edit-card {
+                  background: var(--bg-card);
+                  border-radius: 15px;
+                  box-shadow: var(--shadow-md);
+                  overflow: hidden;
+                  border: 1px solid var(--border-color);
+            }
+
+            .profile-edit-header {
+                  background: var(--primary-gradient);
+                  padding: 2rem;
+                  color: white;
+            }
+
+            .profile-edit-header h2 {
+                  margin: 0;
+                  font-weight: 600;
+            }
+
+            .profile-edit-body {
+                  padding: 2rem;
+            }
+
+            .avatar-section {
+                  text-align: center;
+                  padding: 1.5rem;
+                  background: var(--bg-section);
+                  border-radius: 12px;
+                  margin-bottom: 2rem;
+            }
+
+            .avatar-preview {
+                  width: 150px;
+                  height: 150px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                  border: 4px solid var(--primary-color);
+                  box-shadow: var(--shadow-md);
+                  transition: transform 0.3s ease;
+            }
+
+            .avatar-preview:hover {
+                  transform: scale(1.05);
+            }
+
+            .avatar-placeholder {
+                  width: 150px;
+                  height: 150px;
+                  border-radius: 50%;
+                  background: var(--primary-gradient);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 4rem;
+                  color: white;
+                  font-weight: bold;
+                  border: 4px solid var(--primary-color);
+                  box-shadow: var(--shadow-md);
+            }
+
+            .avatar-upload-btn {
+                  display: inline-block;
+                  margin-top: 1rem;
+                  padding: 0.5rem 1.5rem;
+                  background: var(--primary-color);
+                  color: white;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+            }
+
+            .avatar-upload-btn:hover {
+                  background: var(--primary-hover);
+                  transform: translateY(-2px);
+                  color: white;
+            }
+
+            .avatar-upload-input {
+                  display: none;
+            }
+
+            .form-section-title {
+                  font-size: 1.1rem;
+                  font-weight: 600;
+                  color: var(--text-primary);
+                  margin-bottom: 1rem;
+                  padding-bottom: 0.5rem;
+                  border-bottom: 2px solid var(--primary-color);
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+            }
+
+            .form-section-title i {
+                  color: var(--primary-color);
+            }
+
+            .form-control,
+            .form-select {
+                  border-radius: 8px;
+                  border: 1px solid var(--border-color);
+                  padding: 0.75rem 1rem;
+                  background: var(--input-bg);
+                  color: var(--text-primary);
+                  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .form-control:focus,
+            .form-select:focus {
+                  border-color: var(--primary-color);
+                  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+                  background: var(--input-bg);
+                  color: var(--text-primary);
+            }
+
+            .form-control::placeholder {
+                  color: var(--text-secondary);
+            }
+
+            .form-label {
+                  font-weight: 500;
+                  color: var(--text-primary);
+                  margin-bottom: 0.5rem;
+            }
+
+            .input-group-text {
+                  background: var(--bg-section);
+                  border-radius: 8px 0 0 8px;
+                  border-color: var(--border-color);
+                  color: var(--primary-color);
+            }
+
+            .input-group .form-control {
+                  border-radius: 0 8px 8px 0;
+            }
+
+            .btn-save {
+                  background: var(--primary-gradient);
+                  border: none;
+                  padding: 0.75rem 2rem;
+                  font-weight: 600;
+                  border-radius: 8px;
+                  transition: transform 0.3s ease, box-shadow 0.3s ease;
+                  color: white;
+            }
+
+            .btn-save:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+                  color: white;
+            }
+
+            .btn-cancel {
+                  padding: 0.75rem 2rem;
+                  font-weight: 600;
+                  border-radius: 8px;
+                  border: 2px solid var(--border-color);
+                  transition: all 0.3s ease;
+                  color: var(--text-primary);
+                  background: transparent;
+            }
+
+            .btn-cancel:hover {
+                  border-color: var(--primary-color);
+                  color: var(--primary-color);
+                  background: transparent;
+            }
+
+            .help-text {
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+                  margin-top: 0.25rem;
+            }
+
+            .char-counter {
+                  text-align: right;
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+            }
+
+            .social-input-group {
+                  margin-bottom: 1rem;
+            }
+
+            .social-input-group .input-group-text {
+                  min-width: 40px;
+                  justify-content: center;
+            }
+
+            .social-twitter .input-group-text {
+                  background: rgba(29, 161, 242, 0.15);
+                  color: #1DA1F2;
+            }
+
+            .social-instagram .input-group-text {
+                  background: rgba(228, 64, 95, 0.15);
+                  color: #E4405F;
+            }
+
+            .social-facebook .input-group-text {
+                  background: rgba(66, 103, 178, 0.15);
+                  color: #4267B2;
+            }
+
+            .social-linkedin .input-group-text {
+                  background: rgba(10, 102, 194, 0.15);
+                  color: #0A66C2;
+            }
+      </style>
+
+
+      <div class="edit-profile-container">
+            <div class="profile-edit-card">
+                  <!-- Header -->
+                  <div class="profile-edit-header">
+                        <h2><i class="fas fa-user-edit me-2"></i> Edit Profile</h2>
+                        <p class="mb-0 opacity-75">Update your profile information and settings</p>
+                  </div>
+
+                  <!-- Body -->
+                  <div class="profile-edit-body">
+                        <form action="/user/profile/<%= user._id %>?_method=PUT" method="post" class="validated-form"
+                              enctype="multipart/form-data">
+
+                              <!-- Avatar Upload Section -->
+                              <div class="avatar-section">
+                                    <% if(user.avatar) { %>
+                                          <img src="<%= user.avatar %>" referrerpolicy="noreferrer"
+                                                class="avatar-preview" alt="Profile Avatar" id="avatar-preview-img" />
+                                          <% } else { %>
+                                                <div class="avatar-placeholder" id="avatar-placeholder">
+                                                      <%= (user.displayName || user.username || 'U'
+                                                            ).charAt(0).toUpperCase() %>
+                                                </div>
+                                                <% } %>
+
+                                                      <label for="image-upload" class="avatar-upload-btn">
+                                                            <i class="fas fa-camera me-2"></i> Change Avatar
+                                                      </label>
+                                                      <input type="file" name="image" id="image-upload"
+                                                            class="avatar-upload-input"
+                                                            accept="image/jpeg, image/png, image/jpg"
+                                                            onchange="previewAvatar(this)" />
+
+                                                      <p class="help-text mt-2">
+                                                            <i class="fas fa-info-circle me-1"></i>
+                                                            Recommended: Square image, at least 200x200px. Max 5MB.
+                                                      </p>
+                              </div>
+
+                              <!-- Basic Information -->
+                              <div class="mb-4">
+                                    <h3 class="form-section-title">
+                                          <i class="fas fa-user"></i> Basic Information
+                                    </h3>
+
+                                    <div class="row g-3">
+                                          <!-- Display Name -->
+                                          <div class="col-md-6">
+                                                <label for="displayName" class="form-label">
+                                                      Display Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="displayName"
+                                                      name="user[displayName]" value="<%= user.displayName || '' %>"
+                                                      placeholder="How should we call you?" required />
+                                                <div class="invalid-feedback">Please enter your display name.</div>
                                           </div>
-                                    </div>
 
-                                    <!-- About Section -->
+                                          <!-- Username -->
+                                          <div class="col-md-6">
+                                                <label for="username" class="form-label">
+                                                      Username <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="username"
+                                                      name="user[username]" value="<%= user.username || '' %>"
+                                                      placeholder="Choose a unique username" minlength="3"
+                                                      maxlength="30" required />
+                                                <div class="help-text">3-30 characters</div>
+                                                <div class="invalid-feedback">Username must be 3-30 characters.</div>
+                                          </div>
 
-                                    <div class="col-12">
-                                          <label for="bio" class="form-label">About</label>
-                                          <textarea id="bio" class="form-control" rows="4" name="user[about]"
-                                                placeholder="Let others know about you." style="width:50%"></textarea>
-                                    </div>
+                                          <!-- Email -->
+                                          <div class="col-md-6">
+                                                <label for="email" class="form-label">
+                                                      Email Address
+                                                </label>
+                                                <input type="email" class="form-control" id="email" name="user[email]"
+                                                      value="<%= user.email || '' %>" placeholder="your@email.com" />
+                                                <div class="invalid-feedback">Please enter a valid email.</div>
+                                          </div>
 
-
-                                    <!-- Submit Button -->
-                                    <div class="col-12 mt-4">
-                                          <div class="d-flex gap-2">
-                                                <button type="submit" class="btn btn-primary btn-lg">
-                                                      Save Changes
-                                                </button>
-                                                <!-- populate user before passing in the edit form .-->
-                                                <% if(user.treks) { %>
-                                                      <a href="/treks/" class="btn btn-outline-secondary btn-lg">
-                                                            Cancel
-                                                      </a>
-                                                      <% } %>
+                                          <!-- Location -->
+                                          <div class="col-md-6">
+                                                <label for="location" class="form-label">
+                                                      <i class="fas fa-map-marker-alt me-1"></i> Location
+                                                </label>
+                                                <input type="text" class="form-control" id="location"
+                                                      name="user[location]" value="<%= user.location || '' %>"
+                                                      placeholder="district, state" />
+                                                <div class="help-text">Where are you based?</div>
                                           </div>
                                     </div>
                               </div>
+
+                              <!-- About Section -->
+                              <div class="mb-4">
+                                    <h3 class="form-section-title">
+                                          <i class="fas fa-align-left"></i> About You
+                                    </h3>
+
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea class="form-control" id="bio" name="user[bio]" rows="4" maxlength="500"
+                                          oninput="updateCharCounter(this)"
+                                          placeholder="Tell us about yourself, your trekking experience, favorite trails..."><%= user.bio || '' %></textarea>
+                                    <div class="char-counter">
+                                          <span id="char-count">0</span> / 500 characters
+                                    </div>
+                                    <div class="help-text">Share your trekking story with the community.</div>
+                              </div>
+
+                              <!-- Website -->
+                              <div class="mb-4">
+                                    <h3 class="form-section-title">
+                                          <i class="fas fa-link"></i> Online Presence
+                                    </h3>
+
+                                    <label for="website" class="form-label">
+                                          <i class="fas fa-globe me-1"></i> Website
+                                    </label>
+                                    <div class="input-group">
+                                          <span class="input-group-text">
+                                                <i class="fas fa-link"></i>
+                                          </span>
+                                          <input type="url" class="form-control" id="website" name="user[website]"
+                                                value="<%= user.website || '' %>"
+                                                placeholder="https://yourwebsite.com" />
+                                    </div>
+                                    <div class="help-text">Your personal website or blog (include http:// or https://)
+                                    </div>
+                              </div>
+
+                              <!-- Social Links -->
+                              <div class="mb-4">
+                                    <h3 class="form-section-title">
+                                          <i class="fas fa-share-alt"></i> Social Links
+                                    </h3>
+                                    <p class="help-text mb-3">Connect your social media profiles (optional)</p>
+
+                                    <!-- Twitter -->
+                                    <div class="social-input-group social-twitter">
+                                          <div class="input-group">
+                                                <span class="input-group-text">
+                                                      <i class="bi bi-twitter-x"></i>
+                                                </span>
+                                                <input type="url" class="form-control" name="user[socialLinks][twitter]"
+                                                      value="<%= user.socialLinks?.twitter || '' %>"
+                                                      placeholder="https://twitter.com/" />
+                                          </div>
+                                    </div>
+
+                                    <!-- Instagram -->
+                                    <div class="social-input-group social-instagram">
+                                          <div class="input-group">
+                                                <span class="input-group-text">
+                                                      <i class="bi bi-instagram"></i>
+                                                </span>
+                                                <input type="url" class="form-control"
+                                                      name="user[socialLinks][instagram]"
+                                                      value="<%= user.socialLinks?.instagram || '' %>"
+                                                      placeholder="https://instagram.com/" />
+                                          </div>
+                                    </div>
+
+
+                              </div>
+
+                              <!-- Action Buttons -->
+                              <div class="d-flex gap-3 mt-5">
+                                    <button type="submit" class="btn btn-save btn-lg">
+                                          <i class="fas fa-save me-2"></i> Save Changes
+                                    </button>
+                                    <a href="/user/profile/<%= user._id %>" class="btn btn-cancel btn-lg">
+                                          <i class="fas fa-times me-2"></i> Cancel
+                                    </a>
+                              </div>
                         </form>
                   </div>
-
             </div>
       </div>
+
+      <script>
+            // Avatar Preview Function
+            function previewAvatar(input) {
+                  if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                              // Hide placeholder if exists
+                              const placeholder = document.getElementById('avatar-placeholder');
+                              if (placeholder) {
+                                    placeholder.style.display = 'none';
+                              }
+
+                              // Update or create preview image
+                              let previewImg = document.getElementById('avatar-preview-img');
+                              if (!previewImg) {
+                                    previewImg = document.createElement('img');
+                                    previewImg.id = 'avatar-preview-img';
+                                    previewImg.className = 'avatar-preview';
+                                    input.parentElement.insertBefore(previewImg, input);
+                              }
+                              previewImg.src = e.target.result;
+                        }
+
+                        reader.readAsDataURL(input.files[0]);
+                  }
+            }
+
+            // Character Counter for Bio
+            function updateCharCounter(textarea) {
+                  const count = textarea.value.length;
+                  document.getElementById('char-count').textContent = count;
+
+                  // Visual feedback when approaching limit
+                  if (count > 450) {
+                        document.getElementById('char-count').style.color = '#dc3545';
+                  } else if (count > 400) {
+                        document.getElementById('char-count').style.color = '#ffc107';
+                  } else {
+                        document.getElementById('char-count').style.color = '#6c757d';
+                  }
+            }
+
+            // Initialize character counter on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                  const bioTextarea = document.getElementById('bio');
+                  if (bioTextarea) {
+                        updateCharCounter(bioTextarea);
+                  }
+            });
+
+            // Form Validation
+            document.querySelector('.validated-form').addEventListener('submit', function (e) {
+                  let isValid = true;
+
+                  // Check required fields
+                  const requiredFields = this.querySelectorAll('[required]');
+                  requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                              isValid = false;
+                              field.classList.add('is-invalid');
+                        } else {
+                              field.classList.remove('is-invalid');
+                              field.classList.add('is-valid');
+                        }
+                  });
+
+                  // Validate email format
+                  const emailField = document.getElementById('email');
+                  if (emailField && emailField.value) {
+                        const emailRegex = /^\S+@\S+\.\S+$/;
+                        if (!emailRegex.test(emailField.value)) {
+                              isValid = false;
+                              emailField.classList.add('is-invalid');
+                        }
+                  }
+
+                  // Validate website URL
+                  const websiteField = document.getElementById('website');
+                  if (websiteField && websiteField.value) {
+                        const urlRegex = /^https?:\/\/.+/;
+                        if (!urlRegex.test(websiteField.value)) {
+                              isValid = false;
+                              websiteField.classList.add('is-invalid');
+                        }
+                  }
+
+                  if (!isValid) {
+                        e.preventDefault();
+                        // Scroll to first invalid field
+                        const firstInvalid = this.querySelector('.is-invalid');
+                        if (firstInvalid) {
+                              firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                              firstInvalid.focus();
+                        }
+                  }
+            });
+
+            // Remove invalid class on input
+            document.querySelectorAll('.form-control, textarea').forEach(field => {
+                  field.addEventListener('input', function () {
+                        this.classList.remove('is-invalid');
+                  });
+            });
+      </script>

@@ -288,6 +288,7 @@ body.theme-dark {
 }
 
 /* ---------- Large Card Images (Show Page) ---------- */
+
 .card-img-wrapper-large {
     height: 350px;
     overflow: hidden;
@@ -367,11 +368,13 @@ body.theme-dark {
 .card-header {
     border-bottom: 1px solid rgba(0, 70, 67, 0.2);
     background: rgba(0, 70, 67, 0.1);
+    color: #2a2a2a;
 
 }
 
 .card-header--dark {
     background: var(--primary-dark);
+    color: #2a2a2a;
 }
 
 
@@ -1226,7 +1229,7 @@ body.theme-light .breadcrumb-item.active {
     color: var(--text-muted);
 }
 
-body.theme-light .breadcrumb-item + .breadcrumb-item::before {
+body.theme-light .breadcrumb-item+.breadcrumb-item::before {
     color: var(--text-muted);
 }
 
@@ -1437,16 +1440,16 @@ body.theme-light .table {
     color: var(--text-primary);
 }
 
-body.theme-light .table > :not(caption) > * > * {
+body.theme-light .table> :not(caption)>*>* {
     background-color: transparent;
     border-color: rgba(0, 70, 67, 0.1);
 }
 
-body.theme-light .table-striped > tbody > tr:nth-of-type(odd) > * {
+body.theme-light .table-striped>tbody>tr:nth-of-type(odd)>* {
     background-color: rgba(0, 70, 67, 0.03);
 }
 
-body.theme-light .table-hover > tbody > tr:hover > * {
+body.theme-light .table-hover>tbody>tr:hover>* {
     background-color: rgba(0, 70, 67, 0.06);
 }
 

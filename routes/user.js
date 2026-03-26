@@ -5,6 +5,14 @@ const catchAsync = require('../utils/catchAsync');
 const passport = require('../config/passport');
 const { storeReturnTo, isLoggedIn } = require('../middleware');
 const user = require('../controllers/users');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+
+// Configure multer for avatar upload (single image)
+const upload = multer({
+      storage,
+      limits: { fileSize: 5 * 1024 * 1024 } // 5MB max file size
+});
 
 
 //passport authentication
@@ -46,12 +54,14 @@ router.get('/oauth/github/callback', passport.authenticate('github', {
       }
 )
 
-//GEt USER PROFILE ROUTE
-router.get('/', isLoggedIn, user.showProfile)
+//GET USER PROFILE ROUTE
+router.get('/user/profile/:id', isLoggedIn, user.showProfile)
 
-// router.get('/edit')
+//GET USER EDIT PROFILE
+router.get('/user/profile/:id/edit', isLoggedIn, user.renderEditProfile)
 
-// router.put('/:id')
+//PUT USER PROFILE (with avatar upload)
+router.put('/user/profile/:id', isLoggedIn, upload.single('image'), catchAsync(user.editUserProfile))
 
 
 router.get('/logout', isLoggedIn, user.logoutUser);

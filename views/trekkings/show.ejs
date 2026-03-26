@@ -55,12 +55,17 @@
                                                       <% if(data.author){ %>
                                                             <p class="card-text lead text-secondary">
                                                                   Created by -
-                                                                  <a href="/user/<%= data.author._id %>">
+                                                                  <a href="/user/profile/<%= data.author._id%>">
                                                                         <img src="<%= data.author.avatar %>"
                                                                               alt="<%= data.author.displayName %>"
                                                                               class="rounded-circle" width="30" />
-                                                                        <%= data.author.username ||
-                                                                              data.author.displayName %>
+                                                                        <% if(data.author.displayName){ %>
+                                                                              <%= data.author.displayName %>
+
+                                                                                    <% } else{ %>
+
+                                                                                          <%= data.author.username %>
+                                                                                                <% } %>
                                                                   </a>
                                                             </p>
                                                             <% } %>
@@ -98,13 +103,12 @@
                                                                               </a>
                                                                               <form action="/treks/<%= data._id %>?_method=DELETE"
                                                                                     method="post" class="d-inline">
-                                                                                    <%- include('../partials/csrf') %>
-                                                                                          <button type="submit"
-                                                                                                class="btn btn-outline-danger"
-                                                                                                onclick="return confirm('Are you sure you want to delete this trek?')">
-                                                                                                <i
-                                                                                                      class="bi bi-trash me-2"></i>Delete
-                                                                                          </button>
+                                                                                    <button type="submit"
+                                                                                          class="btn btn-outline-danger"
+                                                                                          onclick="return confirm('Are you sure you want to delete this trek?')">
+                                                                                          <i
+                                                                                                class="bi bi-trash me-2"></i>Delete
+                                                                                    </button>
                                                                               </form>
                                                                         </div>
                                                                         <% } %>
@@ -123,8 +127,8 @@
                               data.coordinates.coordinates.length===2) { %>
                               <div class="card shadow-sm mt-4">
                                     <div class="card-header bg-primary">
-                                          <h4 class="mb-0 text-dark">
-                                                <i class="bi bi-map me-2"></i>
+                                          <h4 class="mb-0 text-white">
+                                                <i class="bi bi-geo-fill me-2"></i>
                                                 <%=data.name %> Location
                                           </h4>
                                     </div>
@@ -141,7 +145,7 @@
                   <div class="col-lg-5">
                         <div class="card shadow-sm">
                               <div class="card-header bg-primary">
-                                    <h4 class="mb-0 text-dark">
+                                    <h4 class="mb-0 text-white">
                                           <i class="bi bi-chat-heart me-2"></i>Reviews
                                     </h4>
                               </div>
@@ -263,5 +267,128 @@
                               </div>
                         </div>
                   </div>
+                  <!-- Food Section -->
+                  <% if(foodData && foodData.length> 0) { %>
+                        <div class="col-12 mt-5">
+                              <div class="card shadow-sm">
+                                    <div class="card-header bg-primary">
+                                          <h4 class="mb-0 text-white">
+                                                <i class="bi bi-cup-straw me-2"></i>Recommended Foods in <%=
+                                                      data.district %>
+                                          </h4>
+                                    </div>
+                                    <div class="card-body">
+                                          <div class="row g-4">
+                                                <% for(let food of foodData){ %>
+                                                      <div class="col-md-6 col-lg-4">
+                                                            <div class="card h-100 food-card shadow-sm hover-lift">
+                                                                  <div class="card-img-wrapper position-relative">
+                                                                        <% if(food.image) { %>
+                                                                              <img src="<%= food.image %>"
+                                                                                    alt="<%= food.name %>"
+                                                                                    class="food-card-img">
+                                                                              <% } else { %>
+                                                                                    <img src="https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg"
+                                                                                          alt="No image"
+                                                                                          class="food-card-img">
+                                                                                    <% } %>
+                                                                                          <div class="food-overlay">
+                                                                                                <span
+                                                                                                      class="badge <%= food.veg ? 'bg-success' : 'bg-danger' %>">
+                                                                                                      <i
+                                                                                                            class="bi bi-<%= food.veg ? 'check-circle' : 'x-circle' %> me-1"></i>
+                                                                                                      <%= food.veg
+                                                                                                            ? 'Veg'
+                                                                                                            : 'Non-Veg'
+                                                                                                            %>
+                                                                                                </span>
+                                                                                          </div>
+                                                                  </div>
+                                                                  <div class="card-body d-flex flex-column">
+                                                                        <h6 class="card-title fw-bold">
+                                                                              <%= food.name %>
+                                                                        </h6>
+                                                                        <p
+                                                                              class="card-text text-secondary small flex-grow-1">
+                                                                              <%= (food.description &&
+                                                                                    food.description.length> 150)
+                                                                                    ? food.description.substring(0, 80)
+                                                                                    + '...'
+                                                                                    : food.description %>
+                                                                        </p>
+                                                                        <div
+                                                                              class="d-flex justify-content-between align-items-center mt-3">
+                                                                              <span class="badge bg-primary">
+                                                                                    <i class="bi bi-geo-alt me-1"></i>
+                                                                                    <%= food.district %>
+                                                                              </span>
+                                                                              <% if(food.pricerange) { %>
+                                                                                    <span
+                                                                                          class="text-success fw-semibold">
+                                                                                          <i
+                                                                                                class="bi bi-currency-rupee"></i>
+                                                                                          <%= food.pricerange %>
+                                                                                    </span>
+                                                                                    <% } %>
+                                                                        </div>
+                                                                        <% if(food.tags && food.tags.length> 0) { %>
+                                                                              <div class="mt-2 d-flex flex-wrap gap-1">
+                                                                                    <% food.tags.slice(0,
+                                                                                          4).forEach(tag=> { %>
+                                                                                          <span
+                                                                                                class="badge bg-light text-dark border">
+                                                                                                #<%= tag %>
+                                                                                          </span>
+                                                                                          <% }) %>
+                                                                              </div>
+                                                                              <% } %>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                      <% } %>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <% } %>
             </div>
       </div>
+
+      <style>
+            .food-card {
+                  transition: transform 0.3s ease, box-shadow 0.3s ease;
+                  border: none;
+                  overflow: hidden;
+            }
+
+            .food-card:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+            }
+
+            .food-card-img {
+                  width: 100%;
+                  height: 200px;
+                  object-fit: cover;
+                  transition: transform 0.3s ease;
+            }
+
+            .food-card:hover .food-card-img {
+                  transform: scale(1.05);
+            }
+
+            .card-img-wrapper {
+                  overflow: hidden;
+                  position: relative;
+            }
+
+            .food-overlay {
+                  position: absolute;
+                  top: 10px;
+                  left: 10px;
+            }
+
+            .hover-lift {
+                  position: relative;
+            }
+      </style>

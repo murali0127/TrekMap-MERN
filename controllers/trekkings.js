@@ -1,9 +1,12 @@
 const { cloudinary } = require('../cloudinary');
 const { Trekking } = require('../models/trekking');
+const Food = require('../models/food')
+const User = require('../models/user')
 const mongoose = require('mongoose');
 const { forwardGeocode } = require('../utils/geocode')
 const maptilerClient = require('@maptiler/client')
-const { getPaginationParams, getPaginationLinks, getPaginationMetadata } = require('../utils/pagination')
+const { getPaginationParams, getPaginationLinks, getPaginationMetadata } = require('../utils/pagination');
+const { push } = require('../seeds/foods');
 if (!process.env.NODE_ENV === 'production') {
       require('dotenv').config();
 }
@@ -48,6 +51,11 @@ module.exports.createNewTrek = async (req, res, next) => {
             newTrek.image = imgs;
             newTrek.author = req.user._id;
             await newTrek.save();
+
+            //Push Trekking id to use model
+            await User.findByIdAndUpdate(req.user._id, { $push: { treks: newTrek._id } })
+
+
             req.flash('success', 'Succesfully created new Trekking.')
             return res.redirect(`/treks/${newTrek._id}`);
 
@@ -72,6 +80,12 @@ module.exports.showTrekking = async (req, res, next) => {
                   path: 'author'
             }
       });
+      const foodData = await Food.find({ district: data.district });
+      if (foodData) {
+            console.log(foodData);
+      } else {
+            console.log('Food data not found.');
+      }
       const geocode = await forwardGeocode(data.location, data.district)
       // console.log(`GeoCode : ${geocode}`);
       if (data === null) {
@@ -80,7 +94,7 @@ module.exports.showTrekking = async (req, res, next) => {
       }
 
 
-      res.render('trekkings/show', { data });
+      res.render('trekkings/show', { data, foodData });
 
 }
 

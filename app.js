@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
+//HELMET
+const helmet = require('helmet');
 
 //ERROR CLASS
 const catchAsync = require('./utils/catchAsync');
@@ -82,8 +84,8 @@ app.use(express.json());
 //Method-Override
 app.use(methodOverride('_method'));
 
-
-
+//HELMET MIDDLEWARE
+// app.use(helmet())
 
 //Configure Session
 const sessionConfiguration = {
@@ -116,8 +118,6 @@ app.use(flash());
 //       getSessionIdentifier: (req) => req.session.id
 // })
 
-
-
 // Apply CSRF protection - must come BEFORE routes
 // app.use(doubleCsrfProtection);
 
@@ -141,17 +141,17 @@ app.use((req, res, next) => {
 })
 
 
+app.get('/', (req, res) => {
+      res.render('home');
+})
 
 //Routes
 app.use('/', userRouter);
 app.use('/treks', trekRouter);
 app.use('/treks/:id/review', reviewRouter);
-app.use('/user/profile', userRouter) //To get proifle info/ User profile Column.
+// app.use('/user/profile', userRouter) //To get proifle info/ User profile Column.
 
 
-app.get('/', (req, res) => {
-      res.render('home');
-})
 
 
 

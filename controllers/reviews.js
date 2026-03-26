@@ -1,5 +1,6 @@
 const { Review } = require('../models/review');
 const { Trekking } = require('../models/trekking')
+const User = require('../models/user');
 
 
 module.exports.addReview = async (req, res) => {
@@ -10,6 +11,10 @@ module.exports.addReview = async (req, res) => {
       trek.reviews.push(rev);
       await trek.save();
       await rev.save();
+      await User.findByIdAndUpdate(
+            req.user._id,
+            { $inc: { 'stats.reviewsWritten': 1 } },
+            { new: true });
       req.flash('success', 'Added Review successfully.')
       res.redirect(`/treks/${trek._id}`)
 

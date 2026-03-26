@@ -1,7 +1,9 @@
 const path = require('path');
 const { Trekking } = require('../models/trekking');
+const Food = require('../models/food')
 const mongoose = require('mongoose');
 const data = require('./locations')
+const foods = require('./foods')
 //Connect MongoDB
 mongoose.connect('mongodb://localhost:27017/Trek-Map')
 
@@ -26,9 +28,9 @@ const seedDB = async () => {
       //       })
       //       await trek.save();
       // }
-      await Trekking.deleteMany({});
-      const seedData = await Trekking.insertMany(data);
-      // await seedData.save();
+      // await Trekking.deleteMany({});
+      // const seedData = await Trekking.insertMany(data);
+      await Food.insertMany(foods)
 }
 
 seedDB();
