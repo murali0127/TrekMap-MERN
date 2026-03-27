@@ -64,7 +64,7 @@ const isReviewAuthorize = async (req, res, next) => {
       }
       if (!review.author.equals(req.user._id)) {
             req.flash('error', 'Sorry! You dont have permission.');
-            res.redirect(`/treks/${id}`);
+            return res.redirect(`/treks/${id}`);
       }
       next();
 }

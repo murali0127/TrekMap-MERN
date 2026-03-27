@@ -4,6 +4,8 @@ const Food = require('../models/food')
 const mongoose = require('mongoose');
 const data = require('./locations')
 const foods = require('./foods')
+const hotels = require('./hotels');
+const Hotel = require('../models/hotel');
 //Connect MongoDB
 mongoose.connect('mongodb://localhost:27017/Trek-Map')
 
@@ -30,7 +32,12 @@ const seedDB = async () => {
       // }
       // await Trekking.deleteMany({});
       // const seedData = await Trekking.insertMany(data);
+      await Food.deleteMany({})
       await Food.insertMany(foods)
+
+      await Hotel.deleteMany({})
+      await Hotel.insertMany(hotels);
+      console.log('Hotel Db inserted successfully')
 }
 
 seedDB();

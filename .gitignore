@@ -6,8 +6,7 @@ dist
 npm-debug.log
 images
 /*.txt
-models/hotel.js
-seeds/hotels.js
+
 .env
 /*.md
 docs

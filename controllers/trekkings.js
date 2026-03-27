@@ -2,11 +2,14 @@ const { cloudinary } = require('../cloudinary');
 const { Trekking } = require('../models/trekking');
 const Food = require('../models/food')
 const User = require('../models/user')
+const Hotel = require('../models/hotel');
 const mongoose = require('mongoose');
 const { forwardGeocode } = require('../utils/geocode')
 const maptilerClient = require('@maptiler/client')
 const { getPaginationParams, getPaginationLinks, getPaginationMetadata } = require('../utils/pagination');
 const { push } = require('../seeds/foods');
+const getDistance = require('../utils/distance');
+// const getDistance = require('../utils/distance');
 if (!process.env.NODE_ENV === 'production') {
       require('dotenv').config();
 }
@@ -80,13 +83,31 @@ module.exports.showTrekking = async (req, res, next) => {
                   path: 'author'
             }
       });
+      //GETTING FOODS AT TREKKING DISTRICT
       const foodData = await Food.find({ district: data.district });
       if (foodData) {
             console.log(foodData);
       } else {
             console.log('Food data not found.');
       }
-      const geocode = await forwardGeocode(data.location, data.district)
+
+      //GET HOTELS RELATED TO THE DISTRICT
+      const hotels = await Hotel.find({ district: data.district }).lean();  // .lean() -> \returns Mongo Document -> JS Object
+      //CALCULATE DISTANCE
+      const trekLat = data.coordinates.coordinates[1];
+      const trekLng = data.coordinates.coordinates[0];
+
+      for (let hotel of hotels) {
+            const hotelLat = hotel.location.coordinates.coordinates[1];
+            const hotelLng = hotel.location.coordinates.coordinates[0];
+            const calculatedDistance = getDistance(trekLat, trekLng, hotelLat, hotelLng);
+            console.log(calculatedDistance)
+            hotel.distanceFromTrek = Number(calculatedDistance.toFixed(2));
+      }
+
+
+      const geocode = await forwardGeocode(data.location, data.district);
+
       // console.log(`GeoCode : ${geocode}`);
       if (data === null) {
             req.flash('error', 'Trekking not found!');
@@ -94,7 +115,7 @@ module.exports.showTrekking = async (req, res, next) => {
       }
 
 
-      res.render('trekkings/show', { data, foodData });
+      res.render('trekkings/show', { data, foodData, hotels });
 
 }
 

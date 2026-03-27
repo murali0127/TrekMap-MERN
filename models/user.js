@@ -98,27 +98,7 @@ userSchema.methods.updateLastActive = function () {
       return this.save();
 };
 
-// Method to calculate profile completeness percentage
-userSchema.methods.getProfileCompleteness = function () {
-      let fields = 0;
-      let filled = 0;
 
-      // Check each profile field
-      if (this.avatar) filled++;
-      fields++;
-      if (this.displayName) filled++;
-      fields++;
-      if (this.bio) filled++;
-      fields++;
-      if (this.location) filled++;
-      fields++;
-      if (this.website) filled++;
-      fields++;
-      if (this.email) filled++;
-      fields++;
-
-      return Math.round((filled / fields) * 100);
-};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

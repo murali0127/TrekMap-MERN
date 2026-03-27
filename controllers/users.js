@@ -99,15 +99,11 @@ module.exports.showProfile = async (req, res) => {
             // Update last active timestamp
             await user.updateLastActive();
 
-            // Calculate profile completeness
-            const profileCompleteness = user.getProfileCompleteness();
-
             // Get trek count (in case populate doesn't return length)
             const treksCount = user.treks ? user.treks.length : 0;
 
             res.render('user/profile', {
                   user,
-                  profileCompleteness,
                   treksCount
             })
       } catch (err) {
