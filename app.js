@@ -49,6 +49,7 @@ const mongooseSanitize = require('express-mongo-sanitize');
 
 //MULTER
 const multer = require('multer');
+const { crossOriginOpenerPolicy } = require('helmet');
 
 const app = express();
 
@@ -85,7 +86,65 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 
 //HELMET MIDDLEWARE
-// app.use(helmet())
+app.use(helmet({
+      contentSecurityPolicy: {
+            directives: {
+                  defaultSrc: ["'self'"],
+
+                  scriptSrc: [
+                        "'self'",
+                        "'unsafe-inline'",
+                        "https://cdn.jsdelivr.net",
+                        "https://cdn.jsdelivr.net",
+                        "https://cdn.maptiler.com",
+                        "https://maps.maptiler.com",
+                        "https://api.maptiler.com"
+                  ],
+
+                  styleSrc: [
+                        "'self'",
+                        "'unsafe-inline'",
+                        "https://cdn.jsdelivr.net",
+                        "https://cdn.maptiler.com",
+                        "https://fonts.googleapis.com"
+                  ],
+
+                  imgSrc: [
+                        "'self'",
+                        "data:",
+                        "blob:",
+                        "https:",
+                        "https://res.cloudinary.com",
+                        "https://api.maptiler.com",
+                        "https://images.unsplash.com",
+                        "https://*.maptiler.com",
+                        "https://images.openai.com",
+                        "https://dynamic-media-cdn.tripadvisor.com"
+                  ],
+
+                  fontSrc: [
+                        "'self'",
+                        "https://cdn.jsdelivr.net",
+                        "https://fonts.gstatic.com"
+                  ],
+
+                  connectSrc: [
+                        "'self'",
+                        "blob:",
+                        "https://api.maptiler.com",
+                        "https://*.maptiler.com"
+                  ],
+                  workerSrc: ["'self'", "blob:"],
+                  frameSrc: ["'none'"],
+                  objectSrc: ["'none'"],
+                  baseUri: ["'self'"],
+                  formAction: ["'self'"],
+                  upgradeInsecureRequests: []
+            }
+      },
+      crossOriginOpenerPolicy: false,
+      crossOriginEmbedderPolicy: false
+}));
 
 //Configure Session
 const sessionConfiguration = {
