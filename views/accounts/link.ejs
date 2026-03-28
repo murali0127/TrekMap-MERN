@@ -1,0 +1,80 @@
+<% layout('layouts/boilerplate') %>
+
+      <body class="bg-primary">
+            <div class="container">
+                  <div class="row justify-content-center mt-5">
+                        <div class="col-md-6 col-lg-5">
+                              <div class="card shadow">
+                                    <div class="card-body p-5">
+                                          <h2 class="text-center mb-4">Link Your Account</h2>
+
+                                          <div class="alert alert-info">
+                                                <p class="mb-0">
+                                                      We found an existing TrekMap account with the email:
+                                                      <strong>
+                                                            <%= email %>
+                                                      </strong>
+                                                </p>
+                                          </div>
+
+                                          <p class="text-muted mb-4">
+                                                To link your <%= provider==='google' ? 'Google' : 'GitHub' %> account,
+                                                      please enter your TrekMap password below. This verifies that you
+                                                      own the
+                                                      account.
+                                          </p>
+
+                                          <% if (locals.messages && messages.error) { %>
+                                                <div class="alert alert-danger">
+                                                      <%= messages.error %>
+                                                </div>
+                                                <% } %>
+
+                                                      <form method="POST" action="/account/link">
+                                                            <input type="hidden" name="token" value="<%= token %>">
+
+                                                            <div class="mb-3">
+                                                                  <label for="password"
+                                                                        class="form-label">Password</label>
+                                                                  <input type="password" class="form-control"
+                                                                        id="password" name="password" required
+                                                                        placeholder="Enter your TrekMap password"
+                                                                        autofocus>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                                                                  Verify & Link Accounts
+                                                            </button>
+                                                      </form>
+
+                                                      <form method="POST" action="/account/link/cancel">
+                                                            <input type="hidden" name="token" value="<%= token %>">
+                                                            <button type="submit"
+                                                                  class="btn btn-outline-secondary w-100">
+                                                                  Cancel - Create New Account Instead
+                                                            </button>
+                                                      </form>
+
+                                                      <hr class="my-4">
+
+                                                      <p class="text-center text-muted mb-0">
+                                                            <small>
+                                                                  Not your account?
+                                                                  <a href="/register">Register a new account</a> |
+                                                                  <a href="/login">Back to login</a>
+                                                            </small>
+                                                      </p>
+                                    </div>
+                              </div>
+
+                              <div class="text-center mt-4">
+                                    <small class="text-muted">
+                                          For security, this link expires in 10 minutes.
+                                    </small>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+
+      </body>

@@ -7,6 +7,8 @@ const { storeReturnTo, isLoggedIn } = require('../middleware');
 const user = require('../controllers/users');
 const multer = require('multer');
 const { storage } = require('../cloudinary');
+const accountLink = require('../controllers/accountLinks');
+const oauthLimiter = require('../utils/oauthRateLimiter');
 
 // Configure multer for avatar upload (single image)
 const upload = multer({
@@ -31,7 +33,7 @@ router.get('/oauth/google/login', passport.authenticate('google', {
       scope: ['profile', 'email']
 }));
 
-router.get('/oauth/google/callback', passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }),
+router.get('/oauth/google/callback', oauthLimiter, passport.authenticate('google', { failureRedirect: '/login', failureFlash: true }),
       (req, res) => {
 
             req.flash('success', `Welcome back ${req.user.displayName || req.user.username}`)
@@ -44,7 +46,7 @@ router.get('/oauth/github/login', passport.authenticate('github', {
 })
 )
 
-router.get('/oauth/github/callback', passport.authenticate('github', {
+router.get('/oauth/github/callback', oauthLimiter, passport.authenticate('github', {
       failureRedirect: '/login',
       failureFlash: true
 }),
@@ -53,6 +55,12 @@ router.get('/oauth/github/callback', passport.authenticate('github', {
             res.redirect('/treks')
       }
 )
+
+
+// ACCOUNT LINKING ROUTES ← ADD THESE
+router.get('/account/link', accountLink.showLinkPage);
+router.post('/account/link', oauthLimiter, accountLink.linkAccount);
+router.post('/account/link/cancel', accountLink.cancelLink);
 
 //GET USER PROFILE ROUTE
 router.get('/user/profile/:id', isLoggedIn, user.showProfile)

@@ -2,7 +2,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const GoogleStratergy = require('passport-google-oauth2').Strategy;
 const GithubStratergy = require('passport-github2').Strategy;
+const crypto = require('crypto');
 const User = require('../models/user');
+const { setPendingLink } = require('../utils/oauthPending');
 
 passport.use(new LocalStrategy(User.authenticate()));
 
@@ -18,31 +20,44 @@ passport.deserializeUser(async (id, done) => {
       }
 });
 
+//CRYPTOGRAPHICALLY SECURE TOKEN GENERATION
+function generateSpecialToken() {
+      return crypto.randomBytes(32).toString('hex');
+}
 
 passport.use(new GoogleStratergy({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/oauth/google/callback'
+      callbackURL: '/oauth/google/callback',
+      passReqToCallback: true   //If this is set to true 'req' must be the first argument.
 },
-      async (accessToken, refreshToken, profile, done) => {
+      async (req, accessToken, refreshToken, profile, done) => {
             try {
 
                   let user = await User.findOne({ googleId: profile.id });
-                  if (user) {
-                        return done(null, user);
-                  }
+                  if (user) return done(null, user);
 
                   const email = profile.emails?.[0]?.value;
                   if (email) {
-                        user = await User.findOne({ email });
-                        if (user) {
-                              user.googleId = profile.id;
-                              user.avatar = user.avatar || profile.photos?.[0]?.value;
-                              await user.save();
-                              return done(null, user);
+                        const existingUser = await User.findOne({ email });
+                        if (existingUser) {
+                              //GENERATE A TOKEN
+                              const token = generateSpecialToken();
+
+                              setPendingLink(token, {
+                                    provider: 'google',
+                                    providerId: profile.id,
+                                    email: email,
+                                    userId: existingUser._id.toString(),
+                                    avatar: profile.photos?.[0]?.value,
+                                    displayName: profile.displayName.toLowerCase()
+                              })
+                              //REDIRECT TO ACCOUNT LINKING PAGE
+                              return req.res.redirect(`/account/link?token=${token}`)
                         }
                   }
 
+                  //NO EXISTING ACCOUNT - CREATE A NEW USER
                   user = await User.create({
                         googleId: profile.id,
                         email: email,
@@ -60,7 +75,7 @@ passport.use(new GithubStratergy({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: '/oauth/github/callback'
-}, async (accessToken, refreshToken, profile, done) => {
+}, async (req, accessToken, refreshToken, profile, done) => {
       try {
 
             let user = await User.findOne({ githubId: profile.id });
@@ -70,15 +85,25 @@ passport.use(new GithubStratergy({
 
             const email = profile.emails?.[0]?.value;
             if (email) {
-                  user = await User.findOne({ email });
-                  if (user) {
-                        user.githubId = profile.id;
-                        user.avatar = user.avatar || profile.photos?.[0]?.value;
-                        await user.save();
-                        return done(null, user);
+
+                  const existingUser = await User.findOne({ email });
+
+                  if (existingUser) {
+                        const token = generateSpecialToken();
+
+                        setPendingLink(token, {
+                              provider: 'github',
+                              providerId: profile.id,
+                              email: email,
+                              userId: existingUser._id.toString(),
+                              avatar: profile.photos?.[0]?.value,
+                              displayName: (profile.displayName || profile.username).toLowerCase(),
+                              username: profile.username
+                        })
+                        return req.res.redirect(`/account/link?token=${token}`);
                   }
             }
-
+            //CREATE A NEW USER 
             user = await User.create({
                   githubId: profile.id,
                   email: email || `${profile.username}@github.com`,

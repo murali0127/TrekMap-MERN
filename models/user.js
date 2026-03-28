@@ -5,6 +5,9 @@ const plm = require('passport-local-mongoose');
 const passportLocalMongoose = plm.default || plm;
 
 const userSchema = new Schema({
+      provider: {
+            type: String
+      },
       email: {
             type: String,
             required: false,
@@ -13,6 +16,9 @@ const userSchema = new Schema({
             lowercase: true,
             trim: true,
             match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
+      },
+      userId: {
+            type: String
       },
       username: {
             type: String,
@@ -30,11 +36,7 @@ const userSchema = new Schema({
             enum: ['admin', 'user'],
             default: 'user'
       },
-      googleId: {
-            type: String,
-            sparse: true
-      },
-      githubId: {
+      providerId: {
             type: String,
             sparse: true
       },

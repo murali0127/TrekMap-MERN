@@ -6,6 +6,11 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
+//.ENV
+if (process.env.NODE_ENV !== 'production') {
+      require('dotenv').config();
+}
+
 //HELMET
 const helmet = require('helmet');
 
@@ -17,10 +22,6 @@ const ExpressError = require('./utils/ExpressError');
 const { reviewSchema } = require('./validateSchema')
 const Review = require('./models/review');
 
-//.ENV
-if (process.env.NODE_ENV !== 'production') {
-      require('dotenv').config();
-}
 
 
 //CSRF
@@ -50,6 +51,9 @@ const mongooseSanitize = require('express-mongo-sanitize');
 //MULTER
 const multer = require('multer');
 const { crossOriginOpenerPolicy } = require('helmet');
+
+// OAUTH ACCOUNTLINK
+const accountLinkRouter = require('./controllers/accountLinks');
 
 const app = express();
 
@@ -194,6 +198,7 @@ app.use((req, res, next) => {
       res.locals.currentUser = req.user || null;
       res.locals.success = req.flash('success');
       res.locals.error = req.flash('error')
+      res.locals.info = req.flash('info')
       //CSRF  MIDDLEWARE - Make token available to views
       // res.locals.csrfToken = generateCsrfToken(req, res)
       next();
@@ -208,6 +213,7 @@ app.get('/', (req, res) => {
 app.use('/', userRouter);
 app.use('/treks', trekRouter);
 app.use('/treks/:id/review', reviewRouter);
+
 // app.use('/user/profile', userRouter) //To get proifle info/ User profile Column.
 
 
