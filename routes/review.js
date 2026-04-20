@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 const { isLoggedIn, validateReview, isAuthorize, isReviewAuthorize } = require('../middleware');
 //controller
 const reviews = require('../controllers/reviews');
+const { getCache } = require('../utils/cache');
 
 
 //ADDING REVIEWS

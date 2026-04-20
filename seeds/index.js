@@ -34,7 +34,6 @@ const seedDB = async () => {
       // const seedData = await Trekking.insertMany(data);
       await Food.deleteMany({})
       await Food.insertMany(foods)
-
       await Hotel.deleteMany({})
       await Hotel.insertMany(hotels);
       console.log('Hotel Db inserted successfully')

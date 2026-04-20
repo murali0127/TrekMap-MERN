@@ -1,6 +1,10 @@
 const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 
+//EMAIL
+const sendEmail = require('../utils/sendEmail');
+const { welcomeTemplate, emailLoginTemplate } = require('../utils/emailTemplates');
+
 // Helper function to validate user input
 const validateUserProfile = (userData) => {
       const errors = [];
@@ -49,6 +53,12 @@ module.exports.registerUser = async (req, res, next) => {
             const newUser = new User({ email, username });
             const registerUser = await User.register(newUser, password);
 
+            //SEND EMAIL
+            await sendEmail({
+                  to: registerUser.email,
+                  ...welcomeTemplate(registerUser)
+            })
+
             req.login(registerUser, err => {
                   if (err) {
                         return next(err);
@@ -67,9 +77,18 @@ module.exports.renderLoginForm = (req, res) => {
       res.render('user/login');
 }
 
-module.exports.loginUser = (req, res) => {
+module.exports.loginUser = async (req, res) => {
       console.log('Current User:', req.user);
       const name = req.user.username || req.user.displayName || 'User';
+      const loggedinUser = await User.findById(req.user.id);
+      if (loggedinUser.email) { //SEND EMAIL
+            await sendEmail({
+                  to: loggedinUser.email,
+                  ...emailLoginTemplate(loggedinUser)
+            })
+
+
+      }
       req.flash('success', `Welcome back ${name}`);
       const redirectUrl = res.locals.returnTo || '/treks';
       delete req.session.returnTo;

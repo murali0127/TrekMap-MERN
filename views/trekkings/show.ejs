@@ -232,8 +232,8 @@
                                                                                                             <% } %>
                                                                               </div>
                                                                               <% if(currentUser &&
-                                                                                    review.author.equals(currentUser._id)){
-                                                                                    %>
+                                                                                    review.author._id.toString()===currentUser._id.toString()
+                                                                                    ){ %>
                                                                                     <form action="/treks/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
                                                                                           method="POST">
                                                                                           <button

@@ -39,7 +39,6 @@ const passport = require('./config/passport');
 
 //SESSION
 const session = require('express-session');
-const { expression } = require('joi');
 
 //FLASH
 const flash = require('connect-flash');
@@ -50,7 +49,11 @@ const mongooseSanitize = require('express-mongo-sanitize');
 
 //MULTER
 const multer = require('multer');
-const { crossOriginOpenerPolicy } = require('helmet');
+// const { crossOriginOpenerPolicy } = require('helmet');
+
+//REDIS CACHE
+const { RedisStore } = require('connect-redis');
+const { client, connectRedis, redisShutDown } = require('./utils/redis')
 
 // OAUTH ACCOUNTLINK
 const accountLinkRouter = require('./controllers/accountLinks');
@@ -150,12 +153,25 @@ app.use(helmet({
       crossOriginEmbedderPolicy: false
 }));
 
+//INITIALIZE REDIS STARTUP
+connectRedis().catch(error => {
+      console.log('Failed to connect to Redis.')
+});
+
+
 //Configure Session
 const sessionConfiguration = {
       name: 'session',
-      secret: 'thisismysecretkey',
+      secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: true,
+      //REDIS STORE
+      store: new RedisStore({
+            client: client,
+            prefix: 'session:', // All session keys will be prefixed with session
+            ttl: 60 * 60 * 24 * 7, //7 days in seconds
+            touchAfter: 24 * 3600//Store only session is Updated -> Update TTL only every 24hrs
+      }),
       cookie: {
             httpOnly: true,
             // secure : true,
@@ -205,6 +221,7 @@ app.use((req, res, next) => {
 })
 
 
+
 app.get('/', (req, res) => {
       res.render('home');
 })
@@ -217,7 +234,17 @@ app.use('/treks/:id/review', reviewRouter);
 // app.use('/user/profile', userRouter) //To get proifle info/ User profile Column.
 
 
-
+//REDIS SHUTDOWN HANDLER
+process.on('SIGTERM', async () => {  //Process.on('SIGTERM') -> Listen to a specific event (signal) and run this function if that happens
+      console.log('SIGTERM received, shutting down gracefully.....');
+      await redisShutDown();
+      process.exit();
+});
+process.on('SIGINT', async () => {
+      console.log('SIGINT received, shutting down gracefully.....');
+      await redisShutDown();
+      process.exit();
+});
 
 
 //ERROR HANDLING MIDDLEWARE
